@@ -15,6 +15,7 @@ add_library(cityepi_core STATIC
     src/common/contact.cpp
     src/common/transitions.cpp
     src/common/rng.cpp
+    src/v1_ilp/v1_simulation.cpp
 )
 target_include_directories(cityepi_core PUBLIC include)
 
@@ -25,6 +26,11 @@ enable_testing()
 add_executable(test_v0 tests/test_v0.cpp)
 target_link_libraries(test_v0 PRIVATE cityepi_core)
 add_test(NAME v0 COMMAND test_v0)
+add_executable(test_v1 tests/test_v1.cpp)
+target_link_libraries(test_v1 PRIVATE cityepi_core)
+add_test(NAME v1 COMMAND test_v1)
+add_executable(bench_v0v1 bench/bench.cpp)
+target_link_libraries(bench_v0v1 PRIVATE cityepi_core)
 
 if(ENABLE_OPENMP)
     find_package(OpenMP REQUIRED)

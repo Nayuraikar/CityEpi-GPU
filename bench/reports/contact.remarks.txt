@@ -1,0 +1,9 @@
+src/common/contact.cpp:9:5: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+    9 |     for (size_t a = 0; a < n; ++a)
+      |     ^
+src/common/contact.cpp:13:5: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+   13 |     for (size_t a = 0; a < n; ++a) {
+      |     ^
+src/common/contact.cpp:9:5: remark: unrolled loop by a factor of 8 with run-time trip count [-Rpass=loop-unroll]
+    9 |     for (size_t a = 0; a < n; ++a)
+      |     ^
