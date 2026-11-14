@@ -1,0 +1,10 @@
+date: 2026-11-14
+cpu: Apple M1, 8 phys / 8 logical cores (4P+4E), 8 GB, L2 4194304 B
+os: Darwin 25.6.0
+Homebrew clang version 23.1.5
+Target: arm64-apple-darwin25.6.0
+flags: -std=c++17 -O3 -Wall -Wextra (+ -fopenmp=libomp for OpenMP build); same for V0/V1/V2; no -march/-ffast-math/LTO
+openmp: spec date 202011 (OpenMP 5.1), Homebrew libomp, linked: 	/opt/homebrew/opt/llvm/lib/libomp.dylib
+OMP_* env: unset (none set; threads via num_threads clause, schedule via omp_set_schedule)
+build: cmake -S . -B build-omp -DCMAKE_BUILD_TYPE=Release -DENABLE_OPENMP=ON -DCMAKE_CXX_COMPILER=/opt/homebrew/opt/llvm/bin/clang++
+tests: build-omp/test_v{0,1,2} and build-serial/test_v{0,1,2} all pass (1770 V2 runs each)
