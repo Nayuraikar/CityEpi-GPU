@@ -51,7 +51,10 @@ RAM, OS and the build flags. OpenMP is OFF by default in the CPU build, so `V2_m
 was used; report speedups against the CPU configuration actually recorded in the header.
 
 ## Status
-Validated locally **host-only**: the real `.cu` source was compiled as C++ against a CPU emulation of the few CUDA runtime calls
-(kernels run as sequential loops). That checks the logic, test harness, failure-injection paths and benchmark plumbing; it says
-nothing about real GPU execution, device `exp()` equality, atomics, or speed. **No GPU result exists yet** — see the Kaggle checklist
-in the hand-off notes; add logs under `bench/results/kaggle_v5/` once run.
+Validated on a Kaggle Tesla T4 (CUDA 13.0.88, `-DCMAKE_CUDA_ARCHITECTURES=75`). The recorded benchmark in
+`bench/results/kaggle_v5/` (`v5_benchmark.csv`, `v5_benchmark.log`, `v5_environment.log`) shows the V5 row bit-identical to V0
+(`identical=yes`) at 10k, 100k, 1M and 5M agents; V5 day-loop medians were 0.00417 / 0.01785 / 0.15479 / 0.64766 s
+(6.1x / 15.4x / 20.6x / 32.6x versus V0 on that host). That directory does not contain a `test_v5` log.
+
+Earlier host-only validation (the real `.cu` compiled as C++ against a CPU emulation of the few CUDA runtime calls) checked the
+logic, test harness, failure-injection paths and benchmark plumbing only.

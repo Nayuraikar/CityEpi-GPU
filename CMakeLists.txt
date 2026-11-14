@@ -164,3 +164,59 @@ if(ENABLE_CUDA)
     target_compile_options(bench_v5 PRIVATE -O3 -Wall -Wextra)
     target_compile_definitions(bench_v5 PRIVATE "CITYEPI_BUILD_FLAGS=\"${CITYEPI_V5_FLAGS_STR}\"")
 endif()
+
+# V6 (optimized CUDA): opt-in, independent of V0-V5 and of ENABLE_CUDA (V5). Nothing above changes when OFF.
+#   cmake -S . -B build-cuda -DENABLE_CUDA_V6=ON [-DENABLE_CUDA=ON  (adds the V5 row/cross-checks)] \
+#         -DCMAKE_BUILD_TYPE=Release [-DCMAKE_CUDA_ARCHITECTURES=75]
+# CUDA-only flags are scoped with $<COMPILE_LANGUAGE:CUDA>; cityepi_core is linked LINK_ONLY so its host options
+# never reach nvcc. -fmad=false keeps V0's floating-point operation order; no fast-math anywhere.
+option(ENABLE_CUDA_V6 "Build V6 (optimized CUDA, needs nvcc + a GPU to run); independent of ENABLE_CUDA" OFF)
+option(CITYEPI_V6_PTXAS_VERBOSE "V6: print per-kernel register/spill usage at compile time (-Xptxas -v)" OFF)
+if(ENABLE_CUDA_V6)
+    if(NOT CMAKE_CUDA_ARCHITECTURES)
+        set(CMAKE_CUDA_ARCHITECTURES 75)
+    endif()
+    enable_language(CUDA)   # no-op when ENABLE_CUDA already enabled it
+    find_package(CUDAToolkit REQUIRED)
+    set(CMAKE_CUDA_STANDARD 17)
+    set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+    set(CITYEPI_V6_NVCC_FLAGS -fmad=false -prec-div=true -prec-sqrt=true -lineinfo)
+    if(CITYEPI_V6_PTXAS_VERBOSE)
+        list(APPEND CITYEPI_V6_NVCC_FLAGS -Xptxas -v)
+    endif()
+
+    add_library(cityepi_v6 STATIC src/v6_cuda/v6_simulation.cu src/v6_cuda/v6_host_info.cpp)
+    target_include_directories(cityepi_v6 PUBLIC include)
+    target_compile_options(cityepi_v6 PRIVATE
+        $<$<COMPILE_LANGUAGE:CUDA>:${CITYEPI_V6_NVCC_FLAGS}>
+        $<$<COMPILE_LANGUAGE:CXX>:-O3 -Wall -Wextra>)
+    target_link_libraries(cityepi_v6 PUBLIC $<LINK_ONLY:cityepi_core> CUDA::cudart)
+
+    if(CMAKE_BUILD_TYPE)
+        string(TOUPPER "${CMAKE_BUILD_TYPE}" _v6_up)
+        set(_v6_cxx_cfg "${CMAKE_CXX_FLAGS_${_v6_up}}")
+        set(_v6_cuda_cfg "${CMAKE_CUDA_FLAGS_${_v6_up}}")
+        set(_v6_name "${CMAKE_BUILD_TYPE}")
+    else()
+        set(_v6_cxx_cfg "")
+        set(_v6_cuda_cfg "")
+        set(_v6_name "none")
+    endif()
+    string(REPLACE ";" " " _v6_nvcc_opts "${CITYEPI_V6_NVCC_FLAGS}")
+    set(CITYEPI_V6_FLAGS_STR "cxx: ${CMAKE_CXX_FLAGS} ${_v6_cxx_cfg} -std=c++${CMAKE_CXX_STANDARD} -O3 | cuda: ${CMAKE_CUDA_FLAGS} ${_v6_cuda_cfg} ${_v6_nvcc_opts} -std=c++${CMAKE_CUDA_STANDARD} archs=${CMAKE_CUDA_ARCHITECTURES} [build_type=${_v6_name} openmp=${ENABLE_OPENMP}]")
+
+    add_executable(test_v6 tests/test_v6.cpp)
+    target_link_libraries(test_v6 PRIVATE cityepi_v6)
+    target_compile_options(test_v6 PRIVATE -O3 -Wall -Wextra)
+    add_test(NAME v6 COMMAND test_v6 --require-gpu)
+    add_executable(bench_v6 bench/bench_v6.cpp)
+    target_link_libraries(bench_v6 PRIVATE cityepi_v6)
+    target_compile_options(bench_v6 PRIVATE -O3 -Wall -Wextra)
+    target_compile_definitions(bench_v6 PRIVATE "CITYEPI_BUILD_FLAGS=\"${CITYEPI_V6_FLAGS_STR}\"")
+    if(ENABLE_CUDA)   # V5 built too: add the V5 row to bench_v6 and V6==V5 checks to test_v6
+        target_link_libraries(test_v6 PRIVATE cityepi_v5)
+        target_compile_definitions(test_v6 PRIVATE CITYEPI_WITH_V5)
+        target_link_libraries(bench_v6 PRIVATE cityepi_v5)
+        target_compile_definitions(bench_v6 PRIVATE CITYEPI_WITH_V5)
+    endif()
+endif()
