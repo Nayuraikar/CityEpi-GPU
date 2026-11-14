@@ -1,3 +1,4 @@
+#include <utility>
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -144,14 +145,27 @@ inline void block16(Ctx& c, size_t a) {
 #endif
 }  // namespace
 
-Result run_simulation_v3(const Params& p0, bool use_simd) {
+static Result v3_impl(const Params& p0, Population pop, Locations locs, bool use_simd);
+
+Result run_simulation_v3(const Params& p, bool use_simd) {
+    Population pop;
+    Locations locs;
+    make_synthetic_input(p, pop, locs);  // host setup, shared with V0-V6 (untimed)
+    return v3_impl(p, std::move(pop), std::move(locs), use_simd);
+}
+
+// External input: validated, then used as supplied (see simulation.hpp).
+Result run_simulation_v3(const Params& p, const Population& in_pop, const Locations& in_locs, bool use_simd) {
+    Population pop;
+    Locations locs;
+    make_external_input(in_pop, in_locs, pop, locs);
+    return v3_impl(p, std::move(pop), std::move(locs), use_simd);
+}
+
+static Result v3_impl(const Params& p0, Population pop, Locations locs, bool use_simd) {
     Params p = p0;
     if (p.incubation_days < 1) p.incubation_days = 1;
     if (p.infectious_days < 1) p.infectious_days = 1;
-    Population pop;
-    Locations locs;
-    generate_synthetic(p, pop, locs);
-    seed_infections(p, pop);
     const size_t n = pop.size(), nl = locs.size();
     Result r;
     r.daily.push_back(count_states(pop));

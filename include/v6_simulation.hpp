@@ -86,6 +86,7 @@ struct V6Result : Result {        // Result::seconds = day loop only, data resid
     double prof_step_ms = 0;      // cfg.profile only: summed agent_step_kernel time
 };
 V6Result run_simulation_v6(const Params& p, const V6Config& cfg = V6Config());
+V6Result run_simulation_v6(const Params& p, const Population& pop, const Locations& locs, const V6Config& cfg = V6Config());  // external input
 
 // Diagnostics (need a device; throw std::runtime_error otherwise).
 void v6_eval_draws(uint64_t seed, const uint32_t* agents, uint32_t day, uint32_t slot, double* out, size_t n);

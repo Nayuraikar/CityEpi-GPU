@@ -18,5 +18,6 @@ struct V2Result : Result {
 };
 
 V2Result run_simulation_v2(const Params& p, const V2Config& cfg = V2Config());
+V2Result run_simulation_v2(const Params& p, const Population& pop, const Locations& locs, const V2Config& cfg = V2Config());  // external input
 bool v2_openmp_enabled();
 int v2_max_threads();

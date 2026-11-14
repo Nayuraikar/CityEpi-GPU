@@ -1,3 +1,4 @@
+#include <utility>
 #include <chrono>
 #include <cmath>
 #include <algorithm>
@@ -89,14 +90,27 @@ Counts agent_pass(const Ctx& c) {
 }
 }  // namespace
 
-V2Result run_simulation_v2(const Params& p0, const V2Config& cfg) {
+static V2Result v2_impl(const Params& p0, Population pop, Locations locs, const V2Config& cfg);
+
+V2Result run_simulation_v2(const Params& p, const V2Config& cfg) {
+    Population pop;
+    Locations locs;
+    make_synthetic_input(p, pop, locs);  // host setup, shared with V0-V6 (untimed)
+    return v2_impl(p, std::move(pop), std::move(locs), cfg);
+}
+
+// External input: validated, then used as supplied (see simulation.hpp).
+V2Result run_simulation_v2(const Params& p, const Population& in_pop, const Locations& in_locs, const V2Config& cfg) {
+    Population pop;
+    Locations locs;
+    make_external_input(in_pop, in_locs, pop, locs);
+    return v2_impl(p, std::move(pop), std::move(locs), cfg);
+}
+
+static V2Result v2_impl(const Params& p0, Population pop, Locations locs, const V2Config& cfg) {
     Params p = p0;
     if (p.incubation_days < 1) p.incubation_days = 1;
     if (p.infectious_days < 1) p.infectious_days = 1;
-    Population pop;
-    Locations locs;
-    generate_synthetic(p, pop, locs);
-    seed_infections(p, pop);
     const size_t n = pop.size(), nl = locs.size();
 
     int T = 1;

@@ -1,3 +1,4 @@
+#include <utility>
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -12,14 +13,27 @@
 //     are independent -> overlapped. Both draws always evaluated (no short-circuit branch).
 //  4. Branchless state/timer update and counters (no mispredicts on E/I/R mix);
 //     counters in locals; I-tally scatter is branchless (adds 0/1).
-Result run_simulation_v1(const Params& p0) {
+static Result v1_impl(const Params& p0, Population pop, Locations locs);
+
+Result run_simulation_v1(const Params& p) {
+    Population pop;
+    Locations locs;
+    make_synthetic_input(p, pop, locs);  // host setup, shared with V0-V6 (untimed)
+    return v1_impl(p, std::move(pop), std::move(locs));
+}
+
+// External input: validated, then used as supplied (see simulation.hpp).
+Result run_simulation_v1(const Params& p, const Population& in_pop, const Locations& in_locs) {
+    Population pop;
+    Locations locs;
+    make_external_input(in_pop, in_locs, pop, locs);
+    return v1_impl(p, std::move(pop), std::move(locs));
+}
+
+static Result v1_impl(const Params& p0, Population pop, Locations locs) {
     Params p = p0;
     if (p.incubation_days < 1) p.incubation_days = 1;
     if (p.infectious_days < 1) p.infectious_days = 1;
-    Population pop;
-    Locations locs;
-    generate_synthetic(p, pop, locs);
-    seed_infections(p, pop);
     const size_t n = pop.size(), nl = locs.size();
     Result r;
     r.daily.push_back(count_states(pop));

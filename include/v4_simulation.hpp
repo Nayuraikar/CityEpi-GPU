@@ -45,6 +45,7 @@ struct V4Result : Result {        // Result::seconds = day loop only, data resid
 };
 
 V4Result run_simulation_v4(const Params& p, const V4Config& cfg = V4Config());
+V4Result run_simulation_v4(const Params& p, const Population& pop, const Locations& locs, const V4Config& cfg = V4Config());  // external input
 
 // Diagnostic for compiler/device-dependent FP: evaluates 1-exp(-x) on the OpenACC device for x[i]
 // (same expression as the probability kernel). Compared bitwise against host std::exp in tests.
