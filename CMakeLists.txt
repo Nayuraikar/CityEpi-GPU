@@ -9,6 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(ENABLE_OPENMP "Enable OpenMP" OFF)
 option(ENABLE_MPI "Enable MPI" OFF)
+option(ENABLE_CUDA "Build V5 (naive CUDA, needs nvcc + a GPU to run); independent of ENABLE_OPENACC" OFF)
 option(ENABLE_OPENACC "Build V4 (OpenACC): GCC -fopenacc host fallback or NVHPC nvc++ -acc=gpu" OFF)
 
 add_library(cityepi_core STATIC
@@ -117,4 +118,49 @@ if(ENABLE_OPENACC)
     add_executable(bench_v4 bench/bench_v4.cpp)
     target_link_libraries(bench_v4 PRIVATE cityepi_v4)
     target_compile_definitions(bench_v4 PRIVATE "CITYEPI_BUILD_FLAGS=\"${CITYEPI_BUILD_FLAGS_STR}\"")
+endif()
+
+# V5 (CUDA): opt-in, independent of V0-V4 and of ENABLE_OPENACC. Nothing above changes when OFF.
+#   cmake -S . -B build -DENABLE_CUDA=ON -DCMAKE_BUILD_TYPE=Release [-DCMAKE_CUDA_ARCHITECTURES=75]   (T4 = sm_75)
+# cityepi_core is linked LINK_ONLY so its host-only options (-Wall -Wextra ...) never reach nvcc.
+# -fmad=false keeps V0's floating-point operation order (no FMA contraction) in the probability kernel.
+if(ENABLE_CUDA)
+    if(NOT CMAKE_CUDA_ARCHITECTURES)
+        set(CMAKE_CUDA_ARCHITECTURES 75)
+    endif()
+    enable_language(CUDA)
+    find_package(CUDAToolkit REQUIRED)
+    set(CMAKE_CUDA_STANDARD 17)
+    set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+    set(CITYEPI_NVCC_FLAGS -fmad=false -prec-div=true -prec-sqrt=true)
+
+    add_library(cityepi_v5 STATIC src/v5_cuda/v5_simulation.cu src/v5_cuda/v5_host_info.cpp)
+    target_include_directories(cityepi_v5 PUBLIC include)
+    target_compile_options(cityepi_v5 PRIVATE
+        $<$<COMPILE_LANGUAGE:CUDA>:${CITYEPI_NVCC_FLAGS}>
+        $<$<COMPILE_LANGUAGE:CXX>:-O3 -Wall -Wextra>)
+    target_link_libraries(cityepi_v5 PUBLIC $<LINK_ONLY:cityepi_core> CUDA::cudart)
+
+    if(CMAKE_BUILD_TYPE)
+        string(TOUPPER "${CMAKE_BUILD_TYPE}" _v5_up)
+        set(_v5_cxx_cfg "${CMAKE_CXX_FLAGS_${_v5_up}}")
+        set(_v5_cuda_cfg "${CMAKE_CUDA_FLAGS_${_v5_up}}")
+        set(_v5_name "${CMAKE_BUILD_TYPE}")
+    else()
+        set(_v5_cxx_cfg "")
+        set(_v5_cuda_cfg "")
+        set(_v5_name "none")
+    endif()
+    string(REPLACE ";" " " _v5_nvcc_opts "${CITYEPI_NVCC_FLAGS}")
+    set(CITYEPI_V5_FLAGS_STR "cxx: ${CMAKE_CXX_FLAGS} ${_v5_cxx_cfg} -std=c++${CMAKE_CXX_STANDARD} -O3 | cuda: ${CMAKE_CUDA_FLAGS} ${_v5_cuda_cfg} ${_v5_nvcc_opts} -std=c++${CMAKE_CUDA_STANDARD} archs=${CMAKE_CUDA_ARCHITECTURES} [build_type=${_v5_name} openmp=${ENABLE_OPENMP}]")
+
+    add_executable(test_v5 tests/test_v5.cpp)
+    target_link_libraries(test_v5 PRIVATE cityepi_v5)
+    target_compile_options(test_v5 PRIVATE -O3 -Wall -Wextra)
+    # --require-gpu: a pass must mean kernels really ran on a GPU (a GPU-less machine fails, not skips).
+    add_test(NAME v5 COMMAND test_v5 --require-gpu)
+    add_executable(bench_v5 bench/bench_v5.cpp)
+    target_link_libraries(bench_v5 PRIVATE cityepi_v5 cityepi_v3)
+    target_compile_options(bench_v5 PRIVATE -O3 -Wall -Wextra)
+    target_compile_definitions(bench_v5 PRIVATE "CITYEPI_BUILD_FLAGS=\"${CITYEPI_V5_FLAGS_STR}\"")
 endif()
