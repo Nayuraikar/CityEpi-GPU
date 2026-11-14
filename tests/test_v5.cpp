@@ -8,6 +8,7 @@
 #include <cstring>
 #include <stdexcept>
 #include <vector>
+#include "external_input_common.hpp"
 #include "rng_inline.hpp"
 #include "v5_rng.hpp"
 #include "v5_simulation.hpp"
@@ -148,6 +149,19 @@ int main(int argc, char** argv) {
     { Params p; p.n_agents = 20000; p.n_homes = 4000; p.n_works = 400; p.days = 60; p.initial_infected = 20;
       Result a = run_simulation_v5(p);
       for (int i = 0; i < 5; ++i) CHECK(eq(a, run_simulation_v5(p))); }
+    // external population input: hand-built (non-synthetic layout) and synthetic-as-external equal V0 / the synthetic path
+    {
+        Params p; p.days = 30; p.beta_home = p.beta_work = 0.5;
+        Population pop; Locations locs; extin::handmade(pop, locs);
+        CHECK(extin::daily_equal(run_simulation(p, pop, locs), run_simulation_v5(p, pop, locs)));
+        Params q; q.n_agents = 4000; q.n_homes = 800; q.n_works = 80; q.days = 40; q.initial_infected = 30;
+        Population sp; Locations sl; make_synthetic_input(q, sp, sl);
+        CHECK(extin::daily_equal(run_simulation_v5(q), run_simulation_v5(q, sp, sl)));
+        CHECK(extin::daily_equal(run_simulation(q), run_simulation_v5(q, sp, sl)));
+        Population bp = pop; bp.home_loc[4] = 0;   // home id pointing at a WORK location
+        CHECK(extin::throws_invalid([&] { run_simulation_v5(p, bp, locs); }));
+        CHECK(v5_live_allocations() == 0);
+    }
     // invalid input still rejected like V0
     { Params p; p.n_agents = 0; bool threw = false; try { run_simulation_v5(p); } catch (const std::exception&) { threw = true; } CHECK(threw);
       CHECK(v5_live_allocations() == 0); }

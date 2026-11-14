@@ -51,6 +51,7 @@ struct V5Result : Result {        // Result::seconds = day loop only, data resid
 };
 
 V5Result run_simulation_v5(const Params& p, const V5Config& cfg = V5Config());
+V5Result run_simulation_v5(const Params& p, const Population& pop, const Locations& locs, const V5Config& cfg = V5Config());  // external input
 
 // Diagnostics (need a device; throw std::runtime_error otherwise).
 // Device evaluation of rand01(seed, agents[i], day, slot) and of 1-exp(-x) (the probability expression).

@@ -1,3 +1,4 @@
+#include <utility>
 #include <cuda_runtime.h>
 
 #include <atomic>
@@ -207,17 +208,30 @@ void v5_eval_prob(const double* x, double* out, size_t n) {
     dout.download(out, n);
 }
 
-V5Result run_simulation_v5(const Params& p0, const V5Config& cfg) {
+static V5Result v5_impl(const Params& p0, Population pop, Locations locs, const V5Config& cfg);
+
+V5Result run_simulation_v5(const Params& p, const V5Config& cfg) {
+    Population pop;
+    Locations locs;
+    make_synthetic_input(p, pop, locs);  // host setup, shared with V0-V6 (untimed)
+    return v5_impl(p, std::move(pop), std::move(locs), cfg);
+}
+
+// External input: validated, then used as supplied (see simulation.hpp).
+V5Result run_simulation_v5(const Params& p, const Population& in_pop, const Locations& in_locs, const V5Config& cfg) {
+    Population pop;
+    Locations locs;
+    make_external_input(in_pop, in_locs, pop, locs);
+    return v5_impl(p, std::move(pop), std::move(locs), cfg);
+}
+
+static V5Result v5_impl(const Params& p0, Population pop, Locations locs, const V5Config& cfg) {
     using clk = std::chrono::steady_clock;
     auto secs = [](clk::time_point a, clk::time_point b) { return std::chrono::duration<double>(b - a).count(); };
 
     Params p = p0;
     if (p.incubation_days < 1) p.incubation_days = 1;
     if (p.infectious_days < 1) p.infectious_days = 1;
-    Population pop;
-    Locations locs;
-    generate_synthetic(p, pop, locs);  // host setup, shared with V0-V4 (untimed)
-    seed_infections(p, pop);
     const size_t n = pop.size(), nl = locs.size();
 
     V5Result r;
