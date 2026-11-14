@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from . import cepop
-from .config import GEO_CRS, METRIC_CRS
+from .config import GEO_CRS, METRIC_CRS, ConfigError, household_pmf, household_settings
 
 ALLOWED_DECISIONS = {"exact_key_merge", "exact_key_duplicate_same_layer", "name_category_proximity_merge",
                      "unnamed_category_proximity_merge", "kept_distinct_close_pair"}
@@ -97,7 +97,51 @@ def validate_outputs(out_dir, boundary_path, cfg, n_expected=None):
     add("distances finite and >= 0", bool(np.isfinite(ag["distance_m"]).all() and (ag["distance_m"] >= 0).all()))
     bad = set(dd["decision"]) - ALLOWED_DECISIONS if len(dd) else set()
     add("dedup decision types recognised", not bad, sorted(bad))
+    _household_checks(out_dir, cfg, ag, loc, arr, h, n, nl, add)
     return checks
+
+
+def _household_checks(out_dir, cfg, ag, loc, arr, h, n, nl, add):
+    """Independent household checks; only when the household layer is enabled in the run's own config.json."""
+    try:
+        hs = household_settings(cfg)
+        enabled = hs["enabled"]
+        pmf = household_pmf(hs) if enabled else None
+    except ConfigError as e:
+        add("household config valid", False, e)
+        return
+    hp = os.path.join(out_dir, "households.parquet")
+    if not enabled:
+        add("household layer disabled: no household artifacts", not os.path.exists(hp) and "household_id" not in ag.columns)
+        return
+    if not add("households.parquet and agents.household_id present", os.path.isfile(hp) and "household_id" in ag.columns):
+        return
+    hh = pd.read_parquet(hp)
+    H = len(hh)
+    size = hh["size"].to_numpy().astype(np.int64)
+    hid = hh["household_id"].to_numpy()
+    add("household_id is 0..H-1 in row order", np.array_equal(hid, np.arange(H)))
+    add("household sizes sum to N", int(size.sum()) == n, f"{int(size.sum())} vs {n}")
+    add("household sizes within configured support", bool(np.isin(size, list(pmf)).all()), f"support {sorted(pmf)}")
+    add("household sizes >= 1", bool((size >= 1).all()))
+    ah = ag["household_id"].to_numpy().astype(np.int64)
+    add("every agent has exactly one valid household", bool(len(ah) == n and ((ah >= 0) & (ah < H)).all() and not ag["household_id"].isna().any()))
+    if not ((ah >= 0) & (ah < H)).all():
+        return
+    members = np.bincount(ah, minlength=H)
+    add("household member counts equal household sizes", np.array_equal(members, size))
+    hhome = hh["home_loc"].to_numpy().astype(np.int64)
+    ok_range = bool(((hhome >= 0) & (hhome < nl)).all())
+    add("every household maps to exactly one valid HOME location", ok_range and bool((arr["loc_type"][hhome] == 0).all()))
+    if not ok_range:
+        return
+    add("each agent's home_loc equals its household's home_loc", np.array_equal(h, hhome[ah]))
+    occ_from_hh = np.bincount(hhome, weights=size, minlength=nl).astype(np.int64)
+    homes = arr["loc_type"] == 0
+    add("home occupancy equals sum of member household sizes", np.array_equal(occ_from_hh[homes], loc["occupancy"].to_numpy()[homes]))
+    per_bld = np.bincount(hhome, minlength=nl)
+    cap = hs["max_households_per_building"]
+    add("households per building <= max_households_per_building", bool((per_bld <= cap).all()), f"max {int(per_bld.max())} vs cap {cap}")
 
 
 def summarize(checks):

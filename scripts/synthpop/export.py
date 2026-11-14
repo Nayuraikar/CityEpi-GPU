@@ -37,7 +37,7 @@ def build_locations(homes, dests, home_counts, dest_occ):
     return gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df["lon"], df["lat"]), crs="EPSG:4326")
 
 
-def write_all(out_dir, locations, home_of_agent, dest_of_agent, distance, stage, dest_category_of_agent, decisions):
+def write_all(out_dir, locations, home_of_agent, dest_of_agent, distance, stage, dest_category_of_agent, decisions, households=None):
     """Return {filename: payload crc / path info}. Occupancy for CEPOP is recomputed from the agent arrays."""
     n, nl = len(home_of_agent), len(locations)
     state = np.zeros(n, np.uint8)
@@ -49,10 +49,16 @@ def write_all(out_dir, locations, home_of_agent, dest_of_agent, distance, stage,
     crc = cepop.write_cepop(os.path.join(out_dir, "population.cepop"), state, timer,
                             home_of_agent.astype(np.uint32), dest_of_agent.astype(np.uint32), loc_type, occ)
     locations.to_parquet(os.path.join(out_dir, "locations.geoparquet"), index=False, compression="snappy")
-    pd.DataFrame({"agent_id": np.arange(n, dtype=np.uint32), "home_loc": home_of_agent.astype(np.uint32),
-                  "dest_loc": dest_of_agent.astype(np.uint32), "dest_category": dest_category_of_agent,
-                  "distance_m": distance.astype(np.float64), "assignment_stage": stage.astype(np.int16)}
-                 ).to_parquet(os.path.join(out_dir, "agents.parquet"), index=False, compression="snappy")
+    cols = {"agent_id": np.arange(n, dtype=np.uint32), "home_loc": home_of_agent.astype(np.uint32),
+            "dest_loc": dest_of_agent.astype(np.uint32), "dest_category": dest_category_of_agent,
+            "distance_m": distance.astype(np.float64), "assignment_stage": stage.astype(np.int16)}
+    if households is not None:  # household layer only: legacy runs keep exactly the columns above and no extra file
+        agent_household, household_size, household_home = households
+        cols["household_id"] = agent_household.astype(np.uint32)
+        pd.DataFrame({"household_id": np.arange(len(household_size), dtype=np.uint32), "home_loc": household_home.astype(np.uint32),
+                      "size": household_size.astype(np.uint8)}).to_parquet(os.path.join(out_dir, "households.parquet"), index=False,
+                                                                           compression="snappy")
+    pd.DataFrame(cols).to_parquet(os.path.join(out_dir, "agents.parquet"), index=False, compression="snappy")
     d = pd.DataFrame(decisions, columns=DEDUP_COLS[1:]) if decisions else pd.DataFrame({c: pd.Series(dtype=object) for c in DEDUP_COLS[1:]})
     d.insert(0, "decision_id", np.arange(len(d), dtype=np.int64))
     d["distance_m"] = d["distance_m"].astype(np.float64)

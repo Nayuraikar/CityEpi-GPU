@@ -6,6 +6,8 @@ import numpy as np
 STREAM_HOME_COUNTS = 1
 STREAM_AGENT_ORDER = 2
 STREAM_ASSIGN = 3
+STREAM_HOUSEHOLD_SIZES = 4   # household layer only; never drawn in legacy mode
+STREAM_HOUSEHOLD_SLOTS = 5   # household layer only
 EXAMPLES_PER_REASON = 10
 
 

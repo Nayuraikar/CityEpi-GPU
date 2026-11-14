@@ -28,7 +28,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-DATA_FILES = ["population.cepop", "locations.geoparquet", "agents.parquet", "dedup_decisions.parquet"]
+DATA_FILES = ["population.cepop", "locations.geoparquet", "agents.parquet", "dedup_decisions.parquet", "households.parquet"]  # last one only exists with the household layer
 
 
 def sha256(path):
@@ -121,6 +121,11 @@ def main(argv=None):
     t_start = time.perf_counter()
     out = a.out_dir or os.path.join("data", "synthetic", f"bengaluru_urban_N{a.n_agents}_seed{a.seed}")
     out = os.path.abspath(out)
+    # Safety guard FIRST: nothing below (environment capture, finish(), logs) may touch an existing non-empty directory.
+    if os.path.exists(out) and (not os.path.isdir(out) or (os.listdir(out) and not a.overwrite)):
+        print(f"FAILED: output path {out} already exists and is not an empty directory (use --overwrite only if you mean to "
+              f"reuse it); nothing was written", file=sys.stderr)
+        return 1
     logs = os.path.join(out, "logs")
     rec = Record()
     record = {"started_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"), "args": vars(a), "steps": rec.steps}
@@ -145,9 +150,6 @@ def main(argv=None):
             rec.add("environment", "failed", reason=f"required library missing: {m}")
             return finish("FAILED", 1)
     rec.add("environment", "passed")
-    if os.path.isdir(out) and os.listdir(out) and not a.overwrite:
-        print(f"output directory {out} is not empty (use --overwrite)", file=sys.stderr)
-        return 1
     os.makedirs(logs, exist_ok=True)
 
     # ---- 2. generate
@@ -195,7 +197,8 @@ def main(argv=None):
         if rc != 0:
             rec.add("determinism_rerun", "failed", seconds=dt, reason="rerun generation failed", log="logs/generate_rerun.log")
             return finish("FAILED", 1)
-        same = {f: sha256(os.path.join(out, f)) == sha256(os.path.join(out2, f)) for f in DATA_FILES}
+        same = {f: sha256(os.path.join(out, f)) == sha256(os.path.join(out2, f)) for f in DATA_FILES
+                if os.path.exists(os.path.join(out, f)) or os.path.exists(os.path.join(out2, f))}
         shutil.rmtree(out2, ignore_errors=True)
         ok = rec.add("determinism_rerun", "passed" if all(same.values()) else "failed", seconds=dt, identical=same)
         if not ok:

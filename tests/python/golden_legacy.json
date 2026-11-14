@@ -1,0 +1,44 @@
+{
+  "_env": {
+    "geopandas": "1.2.0",
+    "numpy": "2.5.4",
+    "pyarrow": "26.0.1",
+    "scipy": "1.18.1",
+    "shapely": "2.2.0"
+  },
+  "_note": "Captured from the pre-household code (Stage 3 state) on the fixture with tests/python/geo_fixtures.TEST_OVERRIDES. Disabled household mode must reproduce these exactly.",
+  "agents_columns": [
+    "agent_id",
+    "home_loc",
+    "dest_loc",
+    "dest_category",
+    "distance_m",
+    "assignment_stage"
+  ],
+  "agents_content": "8c7f2e88c03c65d3cd72101ac0d66ba223aa49697b80eb3d9828f7d57eadee49",
+  "config_sha256": "06a7b1e3add8e3a7e85158084f3602b66ddea6010878279eea219b8985bae028",
+  "dedup_content": "741c5a5363fe2fac0c845e52af89ffc1992aba91991a6afe860cc89c5bb23096",
+  "locations_columns": [
+    "location_id",
+    "loc_type",
+    "loc_type_name",
+    "osm_type",
+    "osm_id",
+    "source_layers",
+    "category",
+    "tier",
+    "name",
+    "footprint_area_m2",
+    "weight",
+    "capacity",
+    "occupancy",
+    "landuse_context",
+    "inside_building",
+    "n_merged_records",
+    "lon",
+    "lat",
+    "geometry"
+  ],
+  "locations_content": "0e9bea1cf6c00d067c8c8508e8429a2710bfd81575b4545a73c30b74882ee6f3",
+  "population.cepop_sha256": "d1acf83e82ea1d349ef7f06399d5863763609f6c641b1c6757266ca49b40e591"
+}

@@ -51,6 +51,23 @@ def distributions(locations, agents, home_counts, dest_occ, dests):
     return out
 
 
+def household_report(hh, pmf):
+    """Household-size and household/home-occupancy distributions (household layer only)."""
+    size = hh["household_size"]
+    n = int(size.sum())
+    obs = {str(k): int((size == k).sum()) for k in sorted(pmf)}
+    cnt = hh["home_counts"]
+    hpb = hh["households_per_building"]
+    return {"household_size_histogram": obs,
+            "household_size_observed_share": {k: v / len(size) for k, v in obs.items()},
+            "household_size_configured_pmf": {str(k): v for k, v in pmf.items()},
+            "agents_in_households_by_size": {str(k): int(k * (size == k).sum()) for k in sorted(pmf)},
+            "households_total": int(len(size)), "agents_total": n,
+            "households_per_building_histogram": histogram(hpb), "households_per_occupied_building": pct(hpb[hpb > 0]),
+            "home_occupancy_histogram": histogram(cnt), "home_occupancy_occupied_buildings": pct(cnt[cnt > 0]),
+            "occupied_buildings": int((cnt > 0).sum())}
+
+
 def to_markdown(rep):
     L = []
     a = L.append
@@ -82,7 +99,7 @@ def to_markdown(rep):
     if dd:
         a("\n## Destination de-duplication")
         a("```\n" + json.dumps(dd, indent=1) + "\n```")
-    for title, key in (("Destination candidates", "destinations"), ("Capacity", "capacity"), ("Spatial fidelity of homes", "spatial_fidelity"),
+    for title, key in (("Households (experimental synthetic layer)", "households"), ("Destination candidates", "destinations"), ("Capacity", "capacity"), ("Spatial fidelity of homes", "spatial_fidelity"),
                        ("Distributions", "distributions"), ("Assignment", "assignment"), ("Cap sensitivity", "cap_sensitivity")):
         if key in rep:
             a(f"\n## {title}\n```\n{json.dumps(rep[key], indent=1)}\n```")

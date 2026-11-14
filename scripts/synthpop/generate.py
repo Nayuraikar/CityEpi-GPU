@@ -13,15 +13,16 @@ import pandas as pd
 from . import assign as A
 from . import destinations as Dm
 from . import export as E
+from . import households as Hh
 from . import residential as R
 from . import validate as V
-from .config import DEST_LAYERS, LAYERS, canonical_json, config_hash
+from .config import DEST_LAYERS, LAYERS, canonical_json, config_hash, household_pmf, household_settings
 from .load import load_boundary, read_layer
 from .report import DISCLAIMER, distributions, spatial_fidelity, to_markdown
 from .util import Recorder, sha256_file
 
 TOOL_VERSION = "synthpop-1"
-OUTPUT_FILES = ["population.cepop", "locations.geoparquet", "agents.parquet", "dedup_decisions.parquet"]
+OUTPUT_FILES = ["population.cepop", "locations.geoparquet", "agents.parquet", "dedup_decisions.parquet", "households.parquet"]
 
 
 def check_out_dir(out_dir, geo_dir, allow_outside=False, overwrite=False):
@@ -104,8 +105,19 @@ def run(cfg, geo_dir, boundary_path, out_dir, allow_outside=False, overwrite=Fal
         homes = homes.sort_values(["osm_type", "osm_id"], kind="mergesort").reset_index(drop=True)
         M = M.sort_values(["osm_type", "osm_id"], kind="mergesort").reset_index(drop=True)
         with _Timer(rec, "assignment"):
-            home_counts, hinfo = A.apportion_homes(homes["weight"].to_numpy(), homes["capacity"].to_numpy(), n_agents, seed)
-            home_of_agent = A.agent_homes(home_counts, seed)
+            hh_set = household_settings(cfg)
+            hh = None
+            if hh_set["enabled"]:  # optional household layer; legacy branch below is untouched
+                pmf = household_pmf(hh_set)
+                hh = Hh.build_households(n_agents, hh_set, pmf, homes["weight"].to_numpy(), seed)
+                home_counts, home_of_agent = hh["home_counts"], hh["home_of_agent"]
+                hinfo = hh["stats"]["apportionment"]
+                homes["capacity"] = int(hh_set["max_households_per_building"]) * max(pmf)  # tightest bound implied by the config
+                rep["households"] = dict(hh["stats"], size_pmf={str(k): v for k, v in pmf.items()},
+                                         assumption="EXPERIMENTAL placeholder PMF; not measured Bengaluru or census data")
+            else:
+                home_counts, hinfo = A.apportion_homes(homes["weight"].to_numpy(), homes["capacity"].to_numpy(), n_agents, seed)
+                home_of_agent = A.agent_homes(home_counts, seed)
             dcap, cinfo = A.destination_caps(M["weight"].to_numpy(), n_agents, cfg["destinations"])
             M["capacity"] = dcap
             rep["capacity"] = {"homes": dict(hinfo, max_agents_per_home=cfg["residential"]["max_agents_per_home"]),
@@ -138,11 +150,15 @@ def run(cfg, geo_dir, boundary_path, out_dir, allow_outside=False, overwrite=Fal
         loc = E.build_locations(homes, M, home_counts, dest_occ)
         with _Timer(rec, "export"):
             outs = E.write_all(out_dir, loc, home_of_agent, dest_of_agent, res["distance_m"], res["stage"],
-                               M["category"].to_numpy(dtype=object)[res["dest"]], decisions)
+                               M["category"].to_numpy(dtype=object)[res["dest"]], decisions,
+                               households=None if hh is None else (hh["agent_household"], hh["household_size"], hh["household_home"]))
         rep["outputs"] = outs
         rep["counts"] = {"agents": int(n_agents), "homes": int(H), "destinations": int(len(M)), "locations": int(H + len(M))}
         ag = pd.read_parquet(os.path.join(out_dir, "agents.parquet"))
         rep["distributions"] = distributions(loc, ag, home_counts, dest_occ, M)
+        if hh is not None:
+            from .report import household_report
+            rep["households"].update(household_report(hh, pmf))
         with _Timer(rec, "validate"):
             checks = V.validate_outputs(out_dir, boundary_path, cfg)
         rep["validation"] = V.summarize(checks)
