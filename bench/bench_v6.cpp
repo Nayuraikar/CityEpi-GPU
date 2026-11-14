@@ -117,6 +117,14 @@ int main(int argc, char** argv) {
         {"V6_E1_E2graph_E3_b128", mk(1, G_, 1, 1, 1, 128)},
         {"V6_E1_E2graph_E3_b512", mk(1, G_, 1, 1, 1, 512)},
         {"V6_E1_E2graph_E3_b1024", mk(1, G_, 1, 1, 1, 1024)},
+        // Targeted E3 ablations on top of E1 + E2 graph (block 128 / 256).
+        // The all-three combo (V6_E1_E2graph_E3, V6_E1_E2graph_E3_b128) is defined above.
+        {"V6_E1_E2graph_skipexp_b128", mk(1, G_, 1, 0, 0, 128)},
+        {"V6_E1_E2graph_skipexp_b256", mk(1, G_, 1, 0, 0, 256)},
+        {"V6_E1_E2graph_skiprng_b128", mk(1, G_, 0, 1, 0, 128)},
+        {"V6_E1_E2graph_skiprng_b256", mk(1, G_, 0, 1, 0, 256)},
+        {"V6_E1_E2graph_predload_b128", mk(1, G_, 0, 0, 1, 128)},
+        {"V6_E1_E2graph_predload_b256", mk(1, G_, 0, 0, 1, 256)},
     };
     if (!rows_filter.empty()) {
         std::vector<Row> keep;
