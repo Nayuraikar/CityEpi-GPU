@@ -9,6 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(ENABLE_OPENMP "Enable OpenMP" OFF)
 option(ENABLE_MPI "Enable MPI" OFF)
+option(ENABLE_OPENACC "Build V4 (OpenACC): GCC -fopenacc host fallback or NVHPC nvc++ -acc=gpu" OFF)
 
 add_library(cityepi_core STATIC
     src/common/simulation.cpp
@@ -62,8 +63,58 @@ if(ENABLE_MPI)
     target_link_libraries(cityepi_core PUBLIC MPI::MPI_CXX)
 endif()
 
-target_compile_options(cityepi_core PUBLIC
-    -O3
-    -Wall
-    -Wextra
-)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "NVHPC")
+    target_compile_options(cityepi_core PUBLIC -O3)
+else()
+    target_compile_options(cityepi_core PUBLIC
+        -O3
+        -Wall
+        -Wextra
+    )
+endif()
+
+# V4 (OpenACC): opt-in, independent of V0-V3. Nothing above changes when OFF.
+#   GCC host fallback : cmake -DENABLE_OPENACC=ON -DCMAKE_CXX_COMPILER=g++-16   (-fopenacc, no GPU)
+#   NVHPC GPU         : cmake -DENABLE_OPENACC=ON -DCMAKE_CXX_COMPILER=nvc++ [-DCITYEPI_GPU_CC=75]
+if(ENABLE_OPENACC)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "NVHPC")
+        set(CITYEPI_ACC_FLAGS "-acc=gpu" "-Minfo=accel")
+        if(CITYEPI_GPU_CC)
+            list(APPEND CITYEPI_ACC_FLAGS "-gpu=cc${CITYEPI_GPU_CC}")
+        endif()
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        set(CITYEPI_ACC_FLAGS "-fopenacc")
+    else()
+        message(FATAL_ERROR "ENABLE_OPENACC needs GCC (-fopenacc) or NVHPC nvc++; got ${CMAKE_CXX_COMPILER_ID}")
+    endif()
+    add_library(cityepi_v4 STATIC src/v4_openacc/v4_simulation.cpp)
+    target_include_directories(cityepi_v4 PUBLIC include)
+    target_compile_options(cityepi_v4 PUBLIC ${CITYEPI_ACC_FLAGS})
+    target_link_options(cityepi_v4 PUBLIC ${CITYEPI_ACC_FLAGS})
+    target_link_libraries(cityepi_v4 PUBLIC cityepi_core cityepi_v3)
+
+    # Flags as actually applied to bench_v4's translation unit (compile order): global flags,
+    # per-config flags, std flag, cityepi_core PUBLIC options, V4 OpenACC options.
+    if(CMAKE_BUILD_TYPE)
+        string(TOUPPER "${CMAKE_BUILD_TYPE}" _cfg_up)
+        set(_cfg_flags "${CMAKE_CXX_FLAGS_${_cfg_up}}")
+        set(_cfg_name "${CMAKE_BUILD_TYPE}")
+    else()
+        set(_cfg_flags "")
+        set(_cfg_name "none")
+    endif()
+    get_target_property(_core_opts cityepi_core INTERFACE_COMPILE_OPTIONS)
+    if(NOT _core_opts)
+        set(_core_opts "")
+    endif()
+    set(_flag_list ${CMAKE_CXX_FLAGS} ${_cfg_flags} -std=c++${CMAKE_CXX_STANDARD} ${_core_opts} ${CITYEPI_ACC_FLAGS})
+    string(REPLACE ";" " " _flags_joined "${_flag_list}")
+    string(STRIP "${_flags_joined}" _flags_joined)
+    set(CITYEPI_BUILD_FLAGS_STR "${_flags_joined} [build_type=${_cfg_name} openmp=${ENABLE_OPENMP}]")
+    add_executable(test_v4 tests/test_v4.cpp)
+    target_link_libraries(test_v4 PRIVATE cityepi_v4)
+    add_test(NAME v4 COMMAND test_v4)
+    add_executable(bench_v4 bench/bench_v4.cpp)
+    target_link_libraries(bench_v4 PRIVATE cityepi_v4)
+    target_compile_definitions(bench_v4 PRIVATE "CITYEPI_BUILD_FLAGS=\"${CITYEPI_BUILD_FLAGS_STR}\"")
+endif()
