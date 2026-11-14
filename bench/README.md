@@ -89,3 +89,11 @@ The hybrid **is modestly faster than V1 at 10k-100k (1.10-1.14x, low variance, 7
 - Assembly shows NEON in the block kernel: `cmeq.16b` x8, `bsl.16b` x6, `cmeq.8h` x2, `sshll.8h`/`sxtl` x2, `addp.16b`/`uaddlv`-style horizontal sums (Homebrew: `addp.16b`; Apple: `uaddlv/addv`), `ld1/st1` 16-byte loads/stores. No `umull.2d`/`ucvtf.2d` (RNG is scalar; scalar `ucvtf d,x` x22 + `mul` remain).
 - Still scalar: RNG + `pr[]` gathers (hit loop), tally scatter, `exp` loop, count/hit store-reload via a 16-byte stack array.
 Limits: 16 scalar RNG evaluations still precede each vector block, the transition was already cheap/branchless in V1, and scatter/gather dominate at large N, so the ceiling is small. Not ablated per part.
+
+## V4 (OpenACC) GPU results
+Kaggle Tesla T4, NVHPC nvc++ 26.9, 100 days, 7 reps (median). Raw CSV: `bench/results/kaggle_v4/v4_gpu_results.csv`; build log: `v4_build.log` (same folder).
+Full methodology, kernel-only vs end-to-end definitions, limitations: `docs/v4_openacc.md`.
+- V4 speedup vs the Kaggle V0 of the same run (kernel-only): 0.92x (10K), 7.0x (100K), 34.2x (1M), 66.4x (5M); end-to-end: 0.91x, 6.85x, 32.6x, 62.4x. At 10K V4 is slower than V0; transfers are ~1% of its time. Per-day launch/sync cost is a plausible but unmeasured explanation.
+- The CPU rows in that CSV come from a Kaggle host whose CPU model and architecture were not recorded, built without OpenMP (`V2_maxT` is not parallel evidence; `V3_neon` is apparently scalar). They are not comparable to the Apple M1 tables above.
+- The 18 MB `v4_gpu_test.log` and 7 MB `v4_gpu_profile.log` (`NV_ACC_NOTIFY`/`NV_ACC_TIME` traces) are git-ignored; their findings are summarised in `docs/v4_openacc.md`.
+- Device and host `exp()` are not bitwise equivalent (43/200000 sampled differences); the test reported all 166 comparisons passed.

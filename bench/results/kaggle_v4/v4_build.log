@@ -1,0 +1,120 @@
+[  3%] Building CXX object CMakeFiles/cityepi_core.dir/src/common/simulation.cpp.o
+[  6%] Building CXX object CMakeFiles/cityepi_core.dir/src/common/contact.cpp.o
+[  9%] Building CXX object CMakeFiles/cityepi_core.dir/src/common/transitions.cpp.o
+[ 12%] Building CXX object CMakeFiles/cityepi_core.dir/src/common/rng.cpp.o
+[ 15%] Building CXX object CMakeFiles/cityepi_core.dir/src/v1_ilp/v1_simulation.cpp.o
+[ 18%] Building CXX object CMakeFiles/cityepi_core.dir/src/v2_openmp/v2_simulation.cpp.o
+[ 21%] Linking CXX static library libcityepi_core.a
+[ 21%] Built target cityepi_core
+[ 25%] Building CXX object CMakeFiles/cityepi_v3.dir/src/v3_simd/v3_simulation.cpp.o
+[ 28%] Building CXX object CMakeFiles/cityepi.dir/src/common/main.cpp.o
+[ 31%] Linking CXX executable cityepi
+"/kaggle/working/CityEpi-GPU/src/v3_simd/v3_simulation.cpp", line 147: warning: parameter "use_simd" was set but never used [set_but_not_used]
+  Result run_simulation_v3(const Params& p0, bool use_simd) {
+                                                  ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 31%] Built target cityepi
+[ 34%] Building CXX object CMakeFiles/test_v0.dir/tests/test_v0.cpp.o
+[ 37%] Building CXX object CMakeFiles/cityepi_v3.dir/src/v3_simd/v3_hybrid.cpp.o
+[ 40%] Linking CXX executable test_v0
+"/kaggle/working/CityEpi-GPU/src/v3_simd/v3_hybrid.cpp", line 85: warning: parameter "use_simd" was set but never used [set_but_not_used]
+  Result run_simulation_v3_hybrid(const Params& p0, bool use_simd) {
+                                                         ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 40%] Built target test_v0
+[ 43%] Building CXX object CMakeFiles/test_v1.dir/tests/test_v1.cpp.o
+[ 46%] Linking CXX executable test_v1
+[ 46%] Built target test_v1
+[ 50%] Building CXX object CMakeFiles/test_v2.dir/tests/test_v2.cpp.o
+[ 53%] Linking CXX static library libcityepi_v3.a
+[ 53%] Built target cityepi_v3
+[ 56%] Building CXX object CMakeFiles/bench_v2.dir/bench/bench_v2.cpp.o
+[ 59%] Linking CXX executable test_v2
+[ 59%] Built target test_v2
+[ 62%] Building CXX object CMakeFiles/bench_v0v1.dir/bench/bench.cpp.o
+[ 65%] Linking CXX executable bench_v0v1
+[ 68%] Linking CXX executable bench_v2
+[ 68%] Built target bench_v2
+[ 68%] Built target bench_v0v1
+[ 71%] Building CXX object CMakeFiles/cityepi_v4.dir/src/v4_openacc/v4_simulation.cpp.o
+[ 75%] Building CXX object CMakeFiles/test_v3.dir/tests/test_v3.cpp.o
+[ 78%] Linking CXX executable test_v3
+[ 78%] Built target test_v3
+[ 81%] Building CXX object CMakeFiles/bench_v3.dir/bench/bench_v3.cpp.o
+v4_probe():
+     50, Generating copy(on_dev) [if not already present]
+         Generating NVIDIA GPU code
+v4_eval_prob(double const*, double*, unsigned long):
+     67, Generating copyin(x[:nn]) [if not already present]
+         Generating copyout(out[:nn]) [if not already present]
+         Generating implicit firstprivate(nn)
+         Generating NVIDIA GPU code
+         67, #pragma acc loop gang, vector(128) /* blockIdx.x threadIdx.x */
+run_simulation_v4(Params const&, V4Config const&):
+    157, Generating present(nin[:nl],lt[:nl],pr[:nl],occ[:nl])
+    159, Generating implicit firstprivate(nl,beta_work,beta_home)
+         Generating NVIDIA GPU code
+        159, #pragma acc loop gang, vector(128) /* blockIdx.x threadIdx.x */
+             Generating implicit private(o,beta)
+    168, Generating present(pr[:nl],st[:n],wl[:n],tm[:n],hl[:n],nin[:nl])
+         Generating implicit firstprivate(n,inc,d,idur,hs)
+         Generating NVIDIA GPU code
+        168, #pragma acc loop gang, vector(128) /* blockIdx.x threadIdx.x */
+             Generating reduction(+:cs,cr,ce,ci)
+             Generating implicit private(nt,s,ns,t1,toI,toE,hit,h,z,w,t,ha,toR,u1,u2)
+    168, Generating implicit copy(cs,cr,ce,ci) [if not already present]
+(anonymous namespace)::DeviceData::enter():
+     90, Generating enter data copyin(occ_[:nl_],lt_[:nl_],nin_[:nl_],hl_[:n_],wl_[:n_],tm_[:n_],st_[:n_])
+         Generating enter data create(pr_[:nl_])
+(anonymous namespace)::DeviceData::finish():
+     98, Generating exit data delete(occ_[:nl_],lt_[:nl_],nin_[:nl_],hl_[:n_],wl_[:n_])
+         Generating exit data copyout(tm_[:n_],st_[:n_])
+         Generating exit data delete(pr_[:nl_])
+(anonymous namespace)::DeviceData::~DeviceData():
+    107, Generating exit data delete(occ_[:nl_],lt_[:nl_],nin_[:nl_],hl_[:n_],wl_[:n_],tm_[:n_],st_[:n_],pr_[:nl_])
+rng_v4::mix(unsigned long):
+      7, include "v4_rng.hpp"
+          10, Generating acc routine seq
+              Generating NVIDIA GPU code
+rng_v4::seed_stage(unsigned long):
+      7, include "v4_rng.hpp"
+          17, Generating acc routine seq
+              Generating NVIDIA GPU code
+rng_v4::agent_stage(unsigned long, unsigned int):
+      7, include "v4_rng.hpp"
+          19, Generating acc routine seq
+              Generating NVIDIA GPU code
+rng_v4::draw(unsigned long, unsigned int, unsigned int):
+      7, include "v4_rng.hpp"
+          21, Generating acc routine seq
+              Generating NVIDIA GPU code
+[ 84%] Linking CXX static library libcityepi_v4.a
+[ 84%] Built target cityepi_v4
+[ 87%] Building CXX object CMakeFiles/test_v4.dir/tests/test_v4.cpp.o
+[ 90%] Linking CXX executable bench_v3
+rng_v4::mix(unsigned long):
+     14, include "v4_rng.hpp"
+          10, Generating acc routine seq
+              Generating NVIDIA GPU code
+rng_v4::seed_stage(unsigned long):
+     14, include "v4_rng.hpp"
+          17, Generating acc routine seq
+              Generating NVIDIA GPU code
+rng_v4::agent_stage(unsigned long, unsigned int):
+     14, include "v4_rng.hpp"
+          19, Generating acc routine seq
+              Generating NVIDIA GPU code
+rng_v4::draw(unsigned long, unsigned int, unsigned int):
+     14, include "v4_rng.hpp"
+          21, Generating acc routine seq
+              Generating NVIDIA GPU code
+[ 90%] Built target bench_v3
+[ 93%] Building CXX object CMakeFiles/bench_v4.dir/bench/bench_v4.cpp.o
+[ 96%] Linking CXX executable test_v4
+[ 96%] Built target test_v4
+[100%] Linking CXX executable bench_v4
+[100%] Built target bench_v4

@@ -1,3 +1,6 @@
 build*/
 .venv/
 *.csv
+!bench/results/**/*.csv
+bench/results/kaggle_v4/v4_gpu_test.log
+bench/results/kaggle_v4/v4_gpu_profile.log
