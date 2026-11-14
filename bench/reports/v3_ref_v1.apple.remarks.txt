@@ -1,0 +1,21 @@
+In file included from src/v1_ilp/v1_simulation.cpp:2:
+In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/chrono:1161:
+In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/forward_list:1613:
+In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/functional:601:
+In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/vector:314:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__vector/vector.h:415:12: remark: loop not vectorized: cannot identify array bounds [-Rpass-analysis=loop-vectorize]
+  415 |     return this->__begin_[__n];
+      |            ^
+src/v1_ilp/v1_simulation.cpp:29:5: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+   29 |     for (size_t a = 0; a < n; ++a) {
+      |     ^
+src/v1_ilp/v1_simulation.cpp:72:13: remark: loop not vectorized: cannot identify array bounds [-Rpass-analysis=loop-vectorize]
+   72 |             nin[h] += isI;
+      |             ^
+src/v1_ilp/v1_simulation.cpp:52:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+   52 |         for (size_t a = 0; a < n; ++a) {
+      |         ^
+src/v1_ilp/v1_simulation.cpp:43:9: remark: the cost-model indicates that vectorization is not beneficial [-Rpass-missed=loop-vectorize]
+   43 |         for (size_t l = 0; l < nl; ++l) {  // independent iterations: exp latencies overlap
+      |         ^
+src/v1_ilp/v1_simulation.cpp:43:9: remark: the cost-model indicates that interleaving is not beneficial [-Rpass-missed=loop-vectorize]

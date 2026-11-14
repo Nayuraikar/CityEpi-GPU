@@ -1,0 +1,5 @@
+date: 2026-11-14
+Apple M1
+Homebrew clang version 23.1.5
+flags: -std=c++17 -O3 -Wall -Wextra (+ -fopenmp=libomp, V2_4T only); no -march/-ffast-math/LTO
+build: cmake -S . -B build-v3-omp -DCMAKE_BUILD_TYPE=Release -DENABLE_OPENMP=ON -DCMAKE_CXX_COMPILER=/opt/homebrew/opt/llvm/bin/clang++

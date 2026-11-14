@@ -1,0 +1,20 @@
+In file included from src/v1_ilp/v1_simulation.cpp:5:
+In file included from include/v1_simulation.hpp:2:
+In file included from include/simulation.hpp:2:
+In file included from /opt/homebrew/Cellar/llvm/23.1.5_1/bin/../include/c++/v1/vector:314:
+/opt/homebrew/Cellar/llvm/23.1.5_1/bin/../include/c++/v1/__vector/vector.h:415:28: remark: loop not vectorized: cannot identify array bounds [-Rpass-analysis=loop-vectorize]
+  415 |     return this->__layout_.__begin_ptr()[__n];
+      |                            ^
+src/v1_ilp/v1_simulation.cpp:29:5: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+   29 |     for (size_t a = 0; a < n; ++a) {
+      |     ^
+src/v1_ilp/v1_simulation.cpp:72:13: remark: loop not vectorized: cannot identify array bounds [-Rpass-analysis=loop-vectorize]
+   72 |             nin[h] += isI;
+      |             ^
+src/v1_ilp/v1_simulation.cpp:52:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+   52 |         for (size_t a = 0; a < n; ++a) {
+      |         ^
+src/v1_ilp/v1_simulation.cpp:43:9: remark: the cost-model indicates that vectorization is not beneficial [-Rpass-missed=loop-vectorize]
+   43 |         for (size_t l = 0; l < nl; ++l) {  // independent iterations: exp latencies overlap
+      |         ^
+src/v1_ilp/v1_simulation.cpp:43:9: remark: the cost-model indicates that interleaving is not beneficial [-Rpass-missed=loop-vectorize]

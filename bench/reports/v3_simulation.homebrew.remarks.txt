@@ -1,0 +1,374 @@
+In file included from src/v3_simd/v3_simulation.cpp:5:
+In file included from include/v3_simulation.hpp:2:
+In file included from include/simulation.hpp:2:
+In file included from /opt/homebrew/Cellar/llvm/23.1.5_1/bin/../include/c++/v1/vector:314:
+/opt/homebrew/Cellar/llvm/23.1.5_1/bin/../include/c++/v1/__vector/vector.h:415:28: remark: loop not vectorized: cannot identify array bounds [-Rpass-analysis=loop-vectorize]
+  415 |     return this->__layout_.__begin_ptr()[__n];
+      |                            ^
+src/v3_simd/v3_simulation.cpp:164:5: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+  164 |     for (size_t a = 0; a < n; ++a) {
+      |     ^
+src/v3_simd/v3_simulation.cpp:56:5: remark: loop not vectorized: cannot identify array bounds [-Rpass-analysis=loop-vectorize]
+   56 |     c.nin[h] += isI;
+      |     ^
+src/v3_simd/v3_simulation.cpp:187:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+  187 |         for (; a < n; ++a) agent_scalar(c, a);
+      |         ^
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: Control flow cannot be substituted for a select [-Rpass-analysis=loop-vectorize]
+   69 |     static const uint32x2_t k1l = vdup_n_u32((uint32_t)0xBF58476D1CE4E5B9ULL), k1h = vdup_n_u32((uint32_t)(0xBF58476D1CE4E5B9ULL >> 32));
+      |     ^
+src/v3_simd/v3_simulation.cpp:101:36: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+  101 |             const uint64_t ag[2] = {(uint32_t)a0, (uint32_t)a1};
+      |                                    ^
+src/v3_simd/v3_simulation.cpp:101:36: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:102:40: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+  102 |             const uint64x2_t ha = mix2(veorq_u64(vhs, vld1q_u64(ag)));
+      |                                        ^
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   69 |     static const uint32x2_t k1l = vdup_n_u32((uint32_t)0xBF58476D1CE4E5B9ULL), k1h = vdup_n_u32((uint32_t)(0xBF58476D1CE4E5B9ULL >> 32));
+      |     ^
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: Store instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: Store instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   70 |     static const uint32x2_t k2l = vdup_n_u32((uint32_t)0x94D049BB133111EBULL), k2h = vdup_n_u32((uint32_t)(0x94D049BB133111EBULL >> 32));
+      |     ^
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: Store instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: Store instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:71:9: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   71 |     x = vaddq_u64(x, vdupq_n_u64(0x9E3779B97F4A7C15ULL));
+      |         ^
+src/v3_simd/v3_simulation.cpp:72:29: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   72 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 30)), k1l, k1h);
+      |                             ^
+src/v3_simd/v3_simulation.cpp:72:16: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   72 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 30)), k1l, k1h);
+      |                ^
+src/v3_simd/v3_simulation.cpp:72:50: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   72 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 30)), k1l, k1h);
+      |                                                  ^
+src/v3_simd/v3_simulation.cpp:72:55: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   72 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 30)), k1l, k1h);
+      |                                                       ^
+src/v3_simd/v3_simulation.cpp:63:28: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   63 |     const uint32x2_t alo = vmovn_u64(a), ahi = vshrn_n_u64(a, 32);
+      |                            ^
+src/v3_simd/v3_simulation.cpp:63:48: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   63 |     const uint32x2_t alo = vmovn_u64(a), ahi = vshrn_n_u64(a, 32);
+      |                                                ^
+src/v3_simd/v3_simulation.cpp:63:48: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:64:27: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   64 |     const uint64x2_t lo = vmull_u32(alo, klo);
+      |                           ^
+src/v3_simd/v3_simulation.cpp:65:40: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   65 |     const uint64x2_t cross = vmlal_u32(vmull_u32(ahi, klo), alo, khi);  // only low 32 bits matter
+      |                                        ^
+src/v3_simd/v3_simulation.cpp:65:30: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   65 |     const uint64x2_t cross = vmlal_u32(vmull_u32(ahi, klo), alo, khi);  // only low 32 bits matter
+      |                              ^
+src/v3_simd/v3_simulation.cpp:65:30: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:66:26: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   66 |     return vaddq_u64(lo, vshlq_n_u64(cross, 32));
+      |                          ^
+src/v3_simd/v3_simulation.cpp:66:12: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   66 |     return vaddq_u64(lo, vshlq_n_u64(cross, 32));
+      |            ^
+src/v3_simd/v3_simulation.cpp:73:29: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   73 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 27)), k2l, k2h);
+      |                             ^
+src/v3_simd/v3_simulation.cpp:73:16: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   73 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 27)), k2l, k2h);
+      |                ^
+src/v3_simd/v3_simulation.cpp:73:50: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   73 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 27)), k2l, k2h);
+      |                                                  ^
+src/v3_simd/v3_simulation.cpp:73:55: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   73 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 27)), k2l, k2h);
+      |                                                       ^
+src/v3_simd/v3_simulation.cpp:63:28: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   63 |     const uint32x2_t alo = vmovn_u64(a), ahi = vshrn_n_u64(a, 32);
+      |                            ^
+src/v3_simd/v3_simulation.cpp:63:48: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   63 |     const uint32x2_t alo = vmovn_u64(a), ahi = vshrn_n_u64(a, 32);
+      |                                                ^
+src/v3_simd/v3_simulation.cpp:63:48: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:64:27: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   64 |     const uint64x2_t lo = vmull_u32(alo, klo);
+      |                           ^
+src/v3_simd/v3_simulation.cpp:65:40: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   65 |     const uint64x2_t cross = vmlal_u32(vmull_u32(ahi, klo), alo, khi);  // only low 32 bits matter
+      |                                        ^
+src/v3_simd/v3_simulation.cpp:65:30: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   65 |     const uint64x2_t cross = vmlal_u32(vmull_u32(ahi, klo), alo, khi);  // only low 32 bits matter
+      |                              ^
+src/v3_simd/v3_simulation.cpp:65:30: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:66:26: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   66 |     return vaddq_u64(lo, vshlq_n_u64(cross, 32));
+      |                          ^
+src/v3_simd/v3_simulation.cpp:66:12: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   66 |     return vaddq_u64(lo, vshlq_n_u64(cross, 32));
+      |            ^
+src/v3_simd/v3_simulation.cpp:74:25: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   74 |     return veorq_u64(x, vshrq_n_u64(x, 31));
+      |                         ^
+src/v3_simd/v3_simulation.cpp:74:12: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   74 |     return veorq_u64(x, vshrq_n_u64(x, 31));
+      |            ^
+src/v3_simd/v3_simulation.cpp:103:40: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+  103 |             const uint64x2_t m1 = mix2(veorq_u64(ha, dh));  // independent chains
+      |                                        ^
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   69 |     static const uint32x2_t k1l = vdup_n_u32((uint32_t)0xBF58476D1CE4E5B9ULL), k1h = vdup_n_u32((uint32_t)(0xBF58476D1CE4E5B9ULL >> 32));
+      |     ^
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: Store instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: Store instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   70 |     static const uint32x2_t k2l = vdup_n_u32((uint32_t)0x94D049BB133111EBULL), k2h = vdup_n_u32((uint32_t)(0x94D049BB133111EBULL >> 32));
+      |     ^
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: Store instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: Store instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:71:9: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   71 |     x = vaddq_u64(x, vdupq_n_u64(0x9E3779B97F4A7C15ULL));
+      |         ^
+src/v3_simd/v3_simulation.cpp:72:29: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   72 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 30)), k1l, k1h);
+      |                             ^
+src/v3_simd/v3_simulation.cpp:72:16: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   72 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 30)), k1l, k1h);
+      |                ^
+src/v3_simd/v3_simulation.cpp:72:50: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   72 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 30)), k1l, k1h);
+      |                                                  ^
+src/v3_simd/v3_simulation.cpp:72:55: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   72 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 30)), k1l, k1h);
+      |                                                       ^
+src/v3_simd/v3_simulation.cpp:63:28: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   63 |     const uint32x2_t alo = vmovn_u64(a), ahi = vshrn_n_u64(a, 32);
+      |                            ^
+src/v3_simd/v3_simulation.cpp:63:48: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   63 |     const uint32x2_t alo = vmovn_u64(a), ahi = vshrn_n_u64(a, 32);
+      |                                                ^
+src/v3_simd/v3_simulation.cpp:63:48: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:64:27: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   64 |     const uint64x2_t lo = vmull_u32(alo, klo);
+      |                           ^
+src/v3_simd/v3_simulation.cpp:65:40: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   65 |     const uint64x2_t cross = vmlal_u32(vmull_u32(ahi, klo), alo, khi);  // only low 32 bits matter
+      |                                        ^
+src/v3_simd/v3_simulation.cpp:65:30: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   65 |     const uint64x2_t cross = vmlal_u32(vmull_u32(ahi, klo), alo, khi);  // only low 32 bits matter
+      |                              ^
+src/v3_simd/v3_simulation.cpp:65:30: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:66:26: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   66 |     return vaddq_u64(lo, vshlq_n_u64(cross, 32));
+      |                          ^
+src/v3_simd/v3_simulation.cpp:66:12: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   66 |     return vaddq_u64(lo, vshlq_n_u64(cross, 32));
+      |            ^
+src/v3_simd/v3_simulation.cpp:73:29: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   73 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 27)), k2l, k2h);
+      |                             ^
+src/v3_simd/v3_simulation.cpp:73:16: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   73 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 27)), k2l, k2h);
+      |                ^
+src/v3_simd/v3_simulation.cpp:73:50: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   73 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 27)), k2l, k2h);
+      |                                                  ^
+src/v3_simd/v3_simulation.cpp:73:55: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   73 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 27)), k2l, k2h);
+      |                                                       ^
+src/v3_simd/v3_simulation.cpp:63:28: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   63 |     const uint32x2_t alo = vmovn_u64(a), ahi = vshrn_n_u64(a, 32);
+      |                            ^
+src/v3_simd/v3_simulation.cpp:63:48: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   63 |     const uint32x2_t alo = vmovn_u64(a), ahi = vshrn_n_u64(a, 32);
+      |                                                ^
+src/v3_simd/v3_simulation.cpp:63:48: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:64:27: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   64 |     const uint64x2_t lo = vmull_u32(alo, klo);
+      |                           ^
+src/v3_simd/v3_simulation.cpp:65:40: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   65 |     const uint64x2_t cross = vmlal_u32(vmull_u32(ahi, klo), alo, khi);  // only low 32 bits matter
+      |                                        ^
+src/v3_simd/v3_simulation.cpp:65:30: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   65 |     const uint64x2_t cross = vmlal_u32(vmull_u32(ahi, klo), alo, khi);  // only low 32 bits matter
+      |                              ^
+src/v3_simd/v3_simulation.cpp:65:30: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:66:26: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   66 |     return vaddq_u64(lo, vshlq_n_u64(cross, 32));
+      |                          ^
+src/v3_simd/v3_simulation.cpp:66:12: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   66 |     return vaddq_u64(lo, vshlq_n_u64(cross, 32));
+      |            ^
+src/v3_simd/v3_simulation.cpp:104:40: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+  104 |             const uint64x2_t m2 = mix2(veorq_u64(ha, dw));
+      |                                        ^
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   69 |     static const uint32x2_t k1l = vdup_n_u32((uint32_t)0xBF58476D1CE4E5B9ULL), k1h = vdup_n_u32((uint32_t)(0xBF58476D1CE4E5B9ULL >> 32));
+      |     ^
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: Store instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: Store instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   70 |     static const uint32x2_t k2l = vdup_n_u32((uint32_t)0x94D049BB133111EBULL), k2h = vdup_n_u32((uint32_t)(0x94D049BB133111EBULL >> 32));
+      |     ^
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: Store instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: Store instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:70:5: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:71:9: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   71 |     x = vaddq_u64(x, vdupq_n_u64(0x9E3779B97F4A7C15ULL));
+      |         ^
+src/v3_simd/v3_simulation.cpp:72:29: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   72 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 30)), k1l, k1h);
+      |                             ^
+src/v3_simd/v3_simulation.cpp:72:16: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   72 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 30)), k1l, k1h);
+      |                ^
+src/v3_simd/v3_simulation.cpp:72:50: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   72 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 30)), k1l, k1h);
+      |                                                  ^
+src/v3_simd/v3_simulation.cpp:72:55: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   72 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 30)), k1l, k1h);
+      |                                                       ^
+src/v3_simd/v3_simulation.cpp:63:28: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   63 |     const uint32x2_t alo = vmovn_u64(a), ahi = vshrn_n_u64(a, 32);
+      |                            ^
+src/v3_simd/v3_simulation.cpp:63:48: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   63 |     const uint32x2_t alo = vmovn_u64(a), ahi = vshrn_n_u64(a, 32);
+      |                                                ^
+src/v3_simd/v3_simulation.cpp:63:48: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:64:27: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   64 |     const uint64x2_t lo = vmull_u32(alo, klo);
+      |                           ^
+src/v3_simd/v3_simulation.cpp:65:40: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   65 |     const uint64x2_t cross = vmlal_u32(vmull_u32(ahi, klo), alo, khi);  // only low 32 bits matter
+      |                                        ^
+src/v3_simd/v3_simulation.cpp:65:30: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   65 |     const uint64x2_t cross = vmlal_u32(vmull_u32(ahi, klo), alo, khi);  // only low 32 bits matter
+      |                              ^
+src/v3_simd/v3_simulation.cpp:65:30: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:66:26: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   66 |     return vaddq_u64(lo, vshlq_n_u64(cross, 32));
+      |                          ^
+src/v3_simd/v3_simulation.cpp:66:12: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   66 |     return vaddq_u64(lo, vshlq_n_u64(cross, 32));
+      |            ^
+src/v3_simd/v3_simulation.cpp:73:29: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   73 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 27)), k2l, k2h);
+      |                             ^
+src/v3_simd/v3_simulation.cpp:73:16: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   73 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 27)), k2l, k2h);
+      |                ^
+src/v3_simd/v3_simulation.cpp:73:50: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   73 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 27)), k2l, k2h);
+      |                                                  ^
+src/v3_simd/v3_simulation.cpp:73:55: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   73 |     x = mul64k(veorq_u64(x, vshrq_n_u64(x, 27)), k2l, k2h);
+      |                                                       ^
+src/v3_simd/v3_simulation.cpp:63:28: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   63 |     const uint32x2_t alo = vmovn_u64(a), ahi = vshrn_n_u64(a, 32);
+      |                            ^
+src/v3_simd/v3_simulation.cpp:63:48: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   63 |     const uint32x2_t alo = vmovn_u64(a), ahi = vshrn_n_u64(a, 32);
+      |                                                ^
+src/v3_simd/v3_simulation.cpp:63:48: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:64:27: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   64 |     const uint64x2_t lo = vmull_u32(alo, klo);
+      |                           ^
+src/v3_simd/v3_simulation.cpp:65:40: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   65 |     const uint64x2_t cross = vmlal_u32(vmull_u32(ahi, klo), alo, khi);  // only low 32 bits matter
+      |                                        ^
+src/v3_simd/v3_simulation.cpp:65:30: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   65 |     const uint64x2_t cross = vmlal_u32(vmull_u32(ahi, klo), alo, khi);  // only low 32 bits matter
+      |                              ^
+src/v3_simd/v3_simulation.cpp:65:30: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:66:26: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   66 |     return vaddq_u64(lo, vshlq_n_u64(cross, 32));
+      |                          ^
+src/v3_simd/v3_simulation.cpp:66:12: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   66 |     return vaddq_u64(lo, vshlq_n_u64(cross, 32));
+      |            ^
+src/v3_simd/v3_simulation.cpp:105:34: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+  105 |             const double ph[2] = {c.pr[c.hl[a0]], c.pr[c.hl[a1]]};  // gathers stay scalar
+      |                                  ^
+src/v3_simd/v3_simulation.cpp:105:34: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:106:34: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+  106 |             const double pw[2] = {c.pr[c.wl[a0]], c.pr[c.wl[a1]]};
+      |                                  ^
+src/v3_simd/v3_simulation.cpp:106:34: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:77:36: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   77 |     return vmulq_f64(vcvtq_f64_u64(vshrq_n_u64(h, 11)), vdupq_n_f64(1.0 / 9007199254740992.0));
+      |                                    ^
+src/v3_simd/v3_simulation.cpp:77:36: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:77:36: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:77:22: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   77 |     return vmulq_f64(vcvtq_f64_u64(vshrq_n_u64(h, 11)), vdupq_n_f64(1.0 / 9007199254740992.0));
+      |                      ^
+src/v3_simd/v3_simulation.cpp:77:12: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   77 |     return vmulq_f64(vcvtq_f64_u64(vshrq_n_u64(h, 11)), vdupq_n_f64(1.0 / 9007199254740992.0));
+      |            ^
+src/v3_simd/v3_simulation.cpp:107:46: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+  107 |             const uint64x2_t hit = vorrq_u64(vcltq_f64(to_unit(m1), vld1q_f64(ph)),
+      |                                              ^
+src/v3_simd/v3_simulation.cpp:77:36: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   77 |     return vmulq_f64(vcvtq_f64_u64(vshrq_n_u64(h, 11)), vdupq_n_f64(1.0 / 9007199254740992.0));
+      |                                    ^
+src/v3_simd/v3_simulation.cpp:77:36: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:77:36: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:77:22: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   77 |     return vmulq_f64(vcvtq_f64_u64(vshrq_n_u64(h, 11)), vdupq_n_f64(1.0 / 9007199254740992.0));
+      |                      ^
+src/v3_simd/v3_simulation.cpp:77:12: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+   77 |     return vmulq_f64(vcvtq_f64_u64(vshrq_n_u64(h, 11)), vdupq_n_f64(1.0 / 9007199254740992.0));
+      |            ^
+src/v3_simd/v3_simulation.cpp:108:46: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+  108 |                                              vcltq_f64(to_unit(m2), vld1q_f64(pw)));
+      |                                              ^
+src/v3_simd/v3_simulation.cpp:107:36: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+  107 |             const uint64x2_t hit = vorrq_u64(vcltq_f64(to_unit(m1), vld1q_f64(ph)),
+      |                                    ^
+src/v3_simd/v3_simulation.cpp:107:36: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:109:37: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+  109 |             hitb[idx[j]] = (uint8_t)(vgetq_lane_u64(hit, 0) & 1);
+      |                                     ^
+src/v3_simd/v3_simulation.cpp:109:37: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+src/v3_simd/v3_simulation.cpp:110:56: remark: loop not vectorized: instruction return type cannot be vectorized [-Rpass-analysis=loop-vectorize]
+  110 |             if (j + 1 < k) hitb[idx[j + 1]] = (uint8_t)(vgetq_lane_u64(hit, 1) & 1);
+      |                                                        ^
+src/v3_simd/v3_simulation.cpp:69:5: remark: loop not vectorized: read with atomic ordering or volatile read [-Rpass-analysis=loop-vectorize]
+   69 |     static const uint32x2_t k1l = vdup_n_u32((uint32_t)0xBF58476D1CE4E5B9ULL), k1h = vdup_n_u32((uint32_t)(0xBF58476D1CE4E5B9ULL >> 32));
+      |     ^
+src/v3_simd/v3_simulation.cpp:99:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+   99 |         for (int j = 0; j < k; j += 2) {
+      |         ^
+src/v3_simd/v3_simulation.cpp:174:9: remark: the cost-model indicates that vectorization is not beneficial [-Rpass-missed=loop-vectorize]
+  174 |         for (size_t l = 0; l < nl; ++l) {
+      |         ^
+src/v3_simd/v3_simulation.cpp:174:9: remark: the cost-model indicates that interleaving is not beneficial [-Rpass-missed=loop-vectorize]

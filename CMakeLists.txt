@@ -20,6 +20,10 @@ add_library(cityepi_core STATIC
 )
 target_include_directories(cityepi_core PUBLIC include)
 
+# V3 (SIMD / ARM NEON): separate target; scalar fallback is compiled on non-NEON targets.
+add_library(cityepi_v3 STATIC src/v3_simd/v3_simulation.cpp src/v3_simd/v3_hybrid.cpp)
+target_link_libraries(cityepi_v3 PUBLIC cityepi_core)
+
 add_executable(cityepi src/common/main.cpp)
 target_link_libraries(cityepi PRIVATE cityepi_core)
 
@@ -33,6 +37,11 @@ add_test(NAME v1 COMMAND test_v1)
 add_executable(test_v2 tests/test_v2.cpp)
 target_link_libraries(test_v2 PRIVATE cityepi_core)
 add_test(NAME v2 COMMAND test_v2)
+add_executable(test_v3 tests/test_v3.cpp)
+target_link_libraries(test_v3 PRIVATE cityepi_v3)
+add_test(NAME v3 COMMAND test_v3)
+add_executable(bench_v3 bench/bench_v3.cpp)
+target_link_libraries(bench_v3 PRIVATE cityepi_v3)
 add_executable(bench_v2 bench/bench_v2.cpp)
 target_link_libraries(bench_v2 PRIVATE cityepi_core)
 add_executable(bench_v0v1 bench/bench.cpp)

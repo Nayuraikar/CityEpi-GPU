@@ -1,0 +1,25 @@
+In file included from src/v3_simd/v3_hybrid.cpp:2:
+In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/chrono:1161:
+In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/forward_list:1613:
+In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/functional:601:
+In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/vector:314:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__vector/vector.h:415:12: remark: loop not vectorized: cannot identify array bounds [-Rpass-analysis=loop-vectorize]
+  415 |     return this->__begin_[__n];
+      |            ^
+src/v3_simd/v3_hybrid.cpp:101:5: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+  101 |     for (size_t a = 0; a < n; ++a) {
+      |     ^
+src/v3_simd/v3_hybrid.cpp:41:5: remark: loop not vectorized: cannot identify array bounds [-Rpass-analysis=loop-vectorize]
+   41 |     c.nin[h] += isI;
+      |     ^
+src/v3_simd/v3_hybrid.cpp:124:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+  124 |         for (; a < n; ++a) agent_scalar(c, a);
+      |         ^
+src/v3_simd/v3_hybrid.cpp:51:5: remark: the cost-model indicates that vectorization is not beneficial [-Rpass-missed=loop-vectorize]
+   51 |     for (int i = 0; i < 16; ++i) hitb[i] = c.st[a + i] == S ? (uint8_t)exposed(c, a + i) : 0;
+      |     ^
+src/v3_simd/v3_hybrid.cpp:51:5: remark: the cost-model indicates that interleaving is not beneficial [-Rpass-missed=loop-vectorize]
+src/v3_simd/v3_hybrid.cpp:111:9: remark: the cost-model indicates that vectorization is not beneficial [-Rpass-missed=loop-vectorize]
+  111 |         for (size_t l = 0; l < nl; ++l) {
+      |         ^
+src/v3_simd/v3_hybrid.cpp:111:9: remark: the cost-model indicates that interleaving is not beneficial [-Rpass-missed=loop-vectorize]
