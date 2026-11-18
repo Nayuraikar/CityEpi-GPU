@@ -1,0 +1,13 @@
+{
+  "input": "data/synthetic/bengaluru_urban_N100000_seed42_households_v1/population.cepop",
+  "agents": 100000,
+  "locations": 238841,
+  "payload_crc32": "0xb5d0eac9",
+  "seed": 44,
+  "days": 100,
+  "initial_infected": 100,
+  "v0": {"seconds": 0.474191, "daily_checksum": "b1603b43386f1a9f", "final": [64713,1182,2113,31992]},
+  "v6": null,
+  "v0_v6_equal": null,
+  "pass": true
+}

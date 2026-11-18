@@ -1,3 +1,5 @@
+import { C } from './theme'
+
 export const nf = (n: number | null | undefined, d = 0) =>
   n == null || Number.isNaN(n) ? '—' : n.toLocaleString('en-US', { maximumFractionDigits: d, minimumFractionDigits: d })
 export const pct = (n: number | null | undefined, d = 1) => (n == null ? '—' : `${nf(n, d)}%`)
@@ -11,10 +13,10 @@ export const x = (n: number | null | undefined) => (n == null ? '—' : `${nf(n,
 export const compact = (n: number) => Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(n)
 
 export const SCENARIO_COLORS: Record<string, string> = {
-  legacy: '#a78bfa', household: '#5eead4', low: '#4da3ff', baseline: '#f5b83d', high: '#ff5d6c',
+  legacy: C.lavender, household: C.teal, low: C.glacier, baseline: C.amber, high: C.coral,
 }
 export const CAT_COLORS: Record<string, string> = {
-  education: '#4da3ff', healthcare: '#ff5d6c', industrial: '#a78bfa', office: '#f5b83d',
-  commercial_retail: '#fb923c', civic_public: '#5eead4', leisure: '#4ad6a0',
+  education: C.glacier, healthcare: C.coral, industrial: C.lavender, office: C.amber,
+  commercial_retail: C.terracotta, civic_public: C.teal, leisure: C.sage,
 }
 export const catLabel = (c: string) => c.replace('_', ' / ').replace(/\b\w/g, (m) => m.toUpperCase())

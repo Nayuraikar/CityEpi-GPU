@@ -1,0 +1,14 @@
+$ cmake --build /kaggle/working/CityEpi-GPU/build-extpop -j 4 --target extpop_run test_extpop_reader test_extpop_integration
+[ 50%] Built target cityepi_core
+[ 64%] Built target cityepi_extpop
+[ 85%] Built target cityepi_v6
+[100%] Built target extpop_run
+[ 50%] Built target cityepi_core
+[ 64%] Built target cityepi_extpop
+[ 85%] Built target cityepi_v3
+[100%] Built target test_extpop_reader
+[ 41%] Built target cityepi_core
+[ 58%] Built target cityepi_v3
+[ 70%] Built target cityepi_extpop
+[ 88%] Built target cityepi_v6
+[100%] Built target test_extpop_integration

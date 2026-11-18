@@ -1,0 +1,4 @@
+$ cmake -S /kaggle/working/CityEpi-GPU -B /kaggle/working/CityEpi-GPU/build-extpop -DCMAKE_BUILD_TYPE=Release -DENABLE_CUDA_V6=ON -DCMAKE_CUDA_ARCHITECTURES=75
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /kaggle/working/CityEpi-GPU/build-extpop

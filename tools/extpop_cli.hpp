@@ -18,6 +18,7 @@
 #include <vector>
 #include "external_population.hpp"
 #include "simulation.hpp"
+#include "snapshot_writer.hpp"
 #ifdef CITYEPI_WITH_V6
 #include "v6_simulation.hpp"
 #endif
@@ -42,11 +43,12 @@ inline bool daily_equal(const Result& a, const Result& b, size_t* first_diff = n
 }
 
 struct Cli {
-    std::string input, json, csv_prefix;
+    std::string input, json, csv_prefix, snapshots_dir;  // snapshots_dir: opt-in, V0 only
     bool run_v0 = true, run_v6 = false;
     Params p;
     uint64_t expect_agents = 0, expect_locations = 0;
     bool v6_opts_given = false;
+    bool progress = false;  // V0 only: emit one 'PROGRESS ...' line per simulated day (stepped via the public step())
     bool v6_agg = false, v6_skip_exp = false, v6_skip_rng = false, v6_pred = false;
     std::string v6_mode = "sync";
     uint32_t v6_graph_days = 32, v6_block = 256;
@@ -74,6 +76,8 @@ inline void usage(FILE* e) {
         "                  [--expect-agents N] [--expect-locations L] [--json OUT.json] [--daily-csv PREFIX]\n"
         "                  [--v6-mode sync|async|graph] [--v6-graph-days N] [--v6-block B] [--v6-agg]\n"
         "                  [--v6-skip-exp] [--v6-skip-rng] [--v6-pred-loads]\n"
+        "                  [--progress]   (V0 only: per-day PROGRESS lines on stdout; flushed)\n"
+        "                  [--snapshots DIR]   (V0 only, opt-in: per-agent state of every day -> DIR/states.cesnap, see docs/snapshot_format.md)\n"
         "default backend is v0 (works in every build). v6 needs a -DENABLE_CUDA_V6=ON build and a usable GPU.\n"
         "exit: 0 ok, 1 error/mismatch/invalid input, 2 requested backend unavailable\n");
 }
@@ -86,6 +90,7 @@ inline int run_cli(int argc, char** argv, FILE* out, FILE* err) {
         const std::string k = argv[i];
         auto val = [&]() -> const char* { return (i + 1 < argc) ? argv[++i] : nullptr; };
         uint64_t u = 0; double d = 0;
+        if (k == "--progress") { c.progress = true; continue; }
         if (k == "--v6-agg") { c.v6_agg = c.v6_opts_given = true; continue; }
         if (k == "--v6-skip-exp") { c.v6_skip_exp = c.v6_opts_given = true; continue; }
         if (k == "--v6-skip-rng") { c.v6_skip_rng = c.v6_opts_given = true; continue; }
@@ -95,6 +100,7 @@ inline int run_cli(int argc, char** argv, FILE* out, FILE* err) {
         if (k == "--input") c.input = v;
         else if (k == "--json") c.json = v;
         else if (k == "--daily-csv") c.csv_prefix = v;
+        else if (k == "--snapshots") c.snapshots_dir = v;
         else if (k == "--backend") {
             const std::string b = v;
             if (b == "v0") { c.run_v0 = true; c.run_v6 = false; }
@@ -118,6 +124,8 @@ inline int run_cli(int argc, char** argv, FILE* out, FILE* err) {
         else return bad("unknown option " + k);
     }
     if (c.input.empty()) return bad("--input is required");
+    if (c.progress && c.run_v6) return bad("--progress is only supported with --backend v0 (V6 reports no per-day progress)");
+    if (!c.snapshots_dir.empty() && c.run_v6) return bad("--snapshots is only supported with --backend v0 (V6 has no per-agent snapshot support)");
     if (c.v6_opts_given && !c.run_v6) return bad("--v6-* options require --backend v6 or both");
 
     // ---- backend availability: fail before doing any work
@@ -196,6 +204,51 @@ inline int run_cli(int argc, char** argv, FILE* out, FILE* err) {
             fclose(f);
         };
         if (c.run_v0) {
+            if (c.progress || !c.snapshots_dir.empty()) {
+                // Same loop as run_simulation (V0): the public step() per day; each line is a real completed day.
+                Params q = c.p;
+                if (q.incubation_days < 1) q.incubation_days = 1;
+                if (q.infectious_days < 1) q.infectious_days = 1;
+                Population wp = pop;
+                std::vector<uint8_t> scratch;
+                // Optional snapshot observer: only reads wp.state after each completed day (frame 0 = seeded state).
+                SnapshotWriter snap;
+                double snap_s = 0;  // wall time spent writing snapshots; excluded from the reported simulation time
+                auto snapshot_frame = [&](size_t day) {
+                    if (c.snapshots_dir.empty()) return;
+                    const auto ts = std::chrono::steady_clock::now();
+                    const Counts w = snap.add_frame(wp);
+                    if (!(w == r0.daily[day]))
+                        throw std::runtime_error("snapshot counts differ from daily counts at day " + std::to_string(day));
+                    snap_s += std::chrono::duration<double>(std::chrono::steady_clock::now() - ts).count();
+                };
+                if (!c.snapshots_dir.empty()) snap.open(c.snapshots_dir, pop.home_loc, (uint64_t)q.days + 1, info.payload_crc32, c.p.seed);
+                r0.daily.push_back(count_states(wp));
+                snapshot_frame(0);
+                if (c.progress) {
+                    fprintf(out, "PROGRESS day=0 total=%u S=%u E=%u I=%u R=%u elapsed=0.0000\n", q.days, r0.daily[0].s, r0.daily[0].e, r0.daily[0].i, r0.daily[0].r);
+                    fflush(out);
+                }
+                const auto t0 = std::chrono::steady_clock::now();
+                for (uint32_t d = 0; d < q.days; ++d) {
+                    step(q, wp, locs, d, scratch);
+                    r0.daily.push_back(count_states(wp));
+                    snapshot_frame((size_t)d + 1);
+                    if (c.progress) {
+                        const Counts& k = r0.daily.back();
+                        const double el = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count() - snap_s;
+                        fprintf(out, "PROGRESS day=%u total=%u S=%u E=%u I=%u R=%u elapsed=%.4f\n", d + 1, q.days, k.s, k.e, k.i, k.r, el);
+                        fflush(out);
+                    }
+                }
+                r0.seconds = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count() - snap_s;
+                if (!c.snapshots_dir.empty()) {
+                    uint64_t bytes = 0;
+                    const uint32_t crc = snap.finish(&bytes);
+                    fprintf(out, "snapshots_status=ok\nsnapshots_file=%s\nsnapshots_backend=v0\nsnapshots_frames=%llu\nsnapshots_bytes=%llu\nsnapshots_payload_crc32=0x%08x\nsnapshots_seconds=%.4f\n",
+                            snap.path().c_str(), (unsigned long long)(q.days + 1), (unsigned long long)bytes, crc, snap_s);
+                }
+            } else
             r0 = run_simulation(c.p, pop, locs);
             all_ok &= conserved(r0, "v0");
             fprintf(out, "v0_status=ok\nv0_seconds=%.4f\nv0_final=S%u/E%u/I%u/R%u\nv0_daily_checksum=%016llx\n", r0.seconds, r0.daily.back().s,

@@ -1,0 +1,43 @@
+$ cmake --build /kaggle/working/CityEpi-GPU/build-extpop -j 4 --target extpop_run test_extpop_reader test_extpop_integration
+[  7%] Building CXX object CMakeFiles/cityepi_core.dir/src/common/simulation.cpp.o
+[ 14%] Building CXX object CMakeFiles/cityepi_core.dir/src/common/contact.cpp.o
+[ 21%] Building CXX object CMakeFiles/cityepi_core.dir/src/common/transitions.cpp.o
+[ 28%] Building CXX object CMakeFiles/cityepi_core.dir/src/common/rng.cpp.o
+[ 35%] Building CXX object CMakeFiles/cityepi_core.dir/src/v1_ilp/v1_simulation.cpp.o
+[ 42%] Building CXX object CMakeFiles/cityepi_core.dir/src/v2_openmp/v2_simulation.cpp.o
+[ 50%] Linking CXX static library libcityepi_core.a
+[ 50%] Built target cityepi_core
+[ 57%] Building CXX object CMakeFiles/cityepi_extpop.dir/src/common/external_population.cpp.o
+[ 64%] Building CUDA object CMakeFiles/cityepi_v6.dir/src/v6_cuda/v6_simulation.cu.o
+[ 71%] Building CXX object CMakeFiles/cityepi_v6.dir/src/v6_cuda/v6_host_info.cpp.o
+[ 78%] Linking CXX static library libcityepi_extpop.a
+[ 78%] Built target cityepi_extpop
+[ 85%] Linking CXX static library libcityepi_v6.a
+[ 85%] Built target cityepi_v6
+[ 92%] Building CXX object CMakeFiles/extpop_run.dir/tools/extpop_run.cpp.o
+[100%] Linking CXX executable extpop_run
+[100%] Built target extpop_run
+[ 50%] Built target cityepi_core
+[ 57%] Building CXX object CMakeFiles/cityepi_v3.dir/src/v3_simd/v3_simulation.cpp.o
+[ 64%] Building CXX object CMakeFiles/cityepi_v3.dir/src/v3_simd/v3_hybrid.cpp.o
+[ 78%] Built target cityepi_extpop
+/kaggle/working/CityEpi-GPU/src/v3_simd/v3_simulation.cpp: In function ‘Result v3_impl(const Params&, Population, Locations, bool)’:
+/kaggle/working/CityEpi-GPU/src/v3_simd/v3_simulation.cpp:165:78: warning: parameter ‘use_simd’ set but not used [-Wunused-but-set-parameter]
+  165 | static Result v3_impl(const Params& p0, Population pop, Locations locs, bool use_simd) {
+      |                                                                         ~~~~~^~~~~~~~
+/kaggle/working/CityEpi-GPU/src/v3_simd/v3_hybrid.cpp: In function ‘Result v3h_impl(const Params&, Population, Locations, bool)’:
+/kaggle/working/CityEpi-GPU/src/v3_simd/v3_hybrid.cpp:103:79: warning: parameter ‘use_simd’ set but not used [-Wunused-but-set-parameter]
+  103 | static Result v3h_impl(const Params& p0, Population pop, Locations locs, bool use_simd) {
+      |                                                                          ~~~~~^~~~~~~~
+[ 85%] Linking CXX static library libcityepi_v3.a
+[ 85%] Built target cityepi_v3
+[ 92%] Building CXX object CMakeFiles/test_extpop_reader.dir/tests/test_extpop_reader.cpp.o
+[100%] Linking CXX executable test_extpop_reader
+[100%] Built target test_extpop_reader
+[ 41%] Built target cityepi_core
+[ 52%] Built target cityepi_extpop
+[ 70%] Built target cityepi_v3
+[ 88%] Built target cityepi_v6
+[ 94%] Building CXX object CMakeFiles/test_extpop_integration.dir/tests/test_extpop_integration.cpp.o
+[100%] Linking CXX executable test_extpop_integration
+[100%] Built target test_extpop_integration

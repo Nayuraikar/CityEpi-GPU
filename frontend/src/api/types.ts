@@ -5,7 +5,7 @@ export interface RunSummary {
 }
 export interface Run {
   key: string; label: string; agents: number; days: number; seed: number; initial_infected: number
-  input: string; payload_crc32: string; v0_seconds: number; v6_seconds_total: number; v6_device: string
+  input: string; dataset_id: string; payload_crc32: string; v0_seconds: number; v6_seconds_total: number; v6_device: string
   daily_checksum: string; v0_v6_equal: boolean; curves_identical: boolean
   summary: RunSummary; curve: CurvePoint[]
 }
@@ -16,6 +16,8 @@ export interface Seeds {
   per_seed: SeedRow[]; summary: SeedSummary[]; curves: Record<string, Record<string, CurvePoint[]>>
   curve_seed_counts: Record<string, number>; n_seeds: number; seed_range: [number, number]
   v6_runs_present: Record<string, number>
+  backend: string; population_inputs: string[]; sd_convention: string
+  peak_range: Record<string, { peak_min: number; peak_max: number }>
 }
 export interface StatusItem { item: string; state: string; detail: string }
 export interface Overview {
@@ -26,10 +28,18 @@ export interface Overview {
   run_environment: { gpu: string; verdict: string; generated_utc: string }
   status: StatusItem[]
 }
+export interface DatasetIdentity {
+  kind: 'household' | 'legacy'; label: string; dataset_id: string; agents: number; locations: number
+  candidate_homes: number; destinations: number; occupied_homes: number; households: number | null; mean_household_size: number | null
+  seed: number; tool_version: string; config_sha256: string; cepop_crc32: string
+  validation: { passed: boolean; n_checks: number }; distance_m: { mean: number; p50: number; p95: number; max: number }
+  distance_histogram: { bin: string; agents: number }[]; destinations_used: number
+}
 export interface PopulationData {
+  datasets: DatasetIdentity[]
   counts: any
   households: { count: number; mean_size: number; pmf_mean: number; assumption: string; buildings_with_households: number; histogram: { size: number; households: number; observed_share: number; configured_pmf: number }[] }
-  home_occupancy: { histogram: { bucket: string; homes: number }[]; nonzero: any; unused_homes: number; total_homes: number; occupied_homes: number }
+  home_occupancy: { households_per_building_cap: number; buildings_at_household_cap: number; households_per_occupied_building: Record<string, number>; histogram: { bucket: string; homes: number }[]; nonzero: any; unused_homes: number; total_homes: number; occupied_homes: number }
   destinations: { by_category: { category: string; destinations: number; capacity: number; occupancy: number; used: number; utilisation_pct: number }[]; occupancy_histogram: { bucket: string; destinations: number }[]; nonzero: any; unused_destinations: number; top: { location_id: number; name: string | null; category: string; occupancy: number; capacity: number }[] }
   assignment: { distance_summary_m: Record<string, number>; distance_histogram: { bin: string; agents: number }[]; distance_by_category: { category: string; count: number; mean: number; median: number; p95: number; max: number }[]; stages: { stage: number; agents: number; radius_m: number | null }[]; gini: number; destinations_at_capacity: number; destinations_used: number; top1pct_share: number; kernel: any }
   spatial_fidelity: any

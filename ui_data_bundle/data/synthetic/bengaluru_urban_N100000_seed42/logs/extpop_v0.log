@@ -1,0 +1,17 @@
+$ /kaggle/working/CityEpi-GPU/build-extpop/extpop_run --input /kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42/population.cepop --days 100 --seed 42 --init 100 --expect-agents 100000 --expect-locations 238841 --backend v0 --json /kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42/extpop_v0.json --daily-csv /kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42/daily
+input=/kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42/population.cepop
+format=CEPOP v1
+agents=100000
+locations=238841
+file_bytes=2294280
+payload_crc32=0x24c6bdf8
+loaded_states=S100000/E0/I0/R0
+seeded_initial=S99900/E0/I100/R0 (seed=42 init=100 days=100)
+validate_input=ok
+v0_population_conserved=yes
+v0_days_recorded=101
+v0_status=ok
+v0_seconds=0.5281
+v0_final=S99198/E2/I8/R792
+v0_daily_checksum=7a08bb17e8233f0f
+RESULT: PASS

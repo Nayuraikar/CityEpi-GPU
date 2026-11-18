@@ -91,6 +91,18 @@ int main(int argc, char** argv) {
         char want[64]; snprintf(want, sizeof want, "v0_daily_checksum=%016llx", (unsigned long long)extpop::daily_checksum(v0));
         CHECK(has(out, want));
         CHECK(fs::exists(tmp / "d_v0.csv"));
+        // snapshots (opt-in, V0): identical daily result/checksum, exact file size, no partial file left, V6/both refused
+        {
+            const std::string sd = (tmp / "snap").string();
+            std::string so;
+            int src = cli({"--input", geo_file, "--days", "40", "--seed", "7", "--init", "50", "--beta-home", "0.6", "--beta-work", "0.9",
+                           "--snapshots", sd}, so);
+            CHECK(src == 0 && has(so, want) && has(so, "snapshots_status=ok") && has(so, "snapshots_frames=41"));
+            CHECK(fs::file_size(fs::path(sd) / "states.cesnap") == extpop::SnapshotWriter::expected_size(6000, 41));
+            CHECK(!fs::exists(fs::path(sd) / "states.cesnap.partial"));
+            std::string bo;
+            CHECK(cli({"--input", geo_file, "--backend", "v6", "--snapshots", sd}, bo) != 0 && has(bo, "V0"));
+        }
         // daily counts conserved and the epidemic actually moved (so equality below is not vacuous)
         for (const Counts& c : v0.daily) CHECK((uint64_t)c.s + c.e + c.i + c.r == 6000);
         CHECK(v0.daily.back().r > 0 || v0.daily.back().i > 50);

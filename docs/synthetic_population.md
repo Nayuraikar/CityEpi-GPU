@@ -225,6 +225,15 @@ audit's 24,130 / 182,348 / 606,807, runtime and memory at ~800k buildings, wheth
 100,000 agents, the cap-sensitivity results), real-data determinism, the V6 build with nvcc, and the GPU round trip
 (`extpop_integration_v6`, `extpop_run --backend both`).
 
+### 11.1 Status update (Phase 5)
+The "not yet executed" list above predates the Kaggle runs. The bundle `ui_data_bundle/data/synthetic/bengaluru_urban_N100000_seed42_households_v1/`
+now contains the recorded outputs of that run: `kaggle_run_record.json` (verdict `ALL_PASSED`; 100,000 agents, 206,478 candidate
+homes, 32,363 destinations, 238,841 locations), `validation_independent.json` (44 checks, 0 failed), and `extpop_v0_v6.json`
+(V0 and V6 on the real CEPOP: same daily checksum `b213860e1d97b2c8`, final S/E/I/R 65,371 / 1,257 / 2,343 / 31,029). The same
+checksum was reproduced by a live V0 run on an Apple M1 through the Simulation Studio (`frontend/e2e/studio.spec.ts`, test 8).
+Not re-verified here: the tier counts versus the audit's figures, cap-sensitivity conclusions, and generator runtime/memory;
+read them from `report.json` / `report.md` in that directory.
+
 ## 12. Limitations
 
 * Synthetic by construction; not calibrated to any census, employment, school-enrolment, health-service or travel data.

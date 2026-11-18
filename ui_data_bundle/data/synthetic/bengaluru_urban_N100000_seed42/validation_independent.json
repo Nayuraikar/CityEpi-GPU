@@ -1,0 +1,172 @@
+{
+  "passed": true,
+  "n_checks": 33,
+  "failed": [],
+  "checks": [
+    {
+      "name": "output files present",
+      "passed": true,
+      "detail": "ok"
+    },
+    {
+      "name": "cepop format (magic/version/size/CRC)",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "agent count == requested N",
+      "passed": true,
+      "detail": "100000 vs 100000"
+    },
+    {
+      "name": "array sizes consistent",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "agents.parquet rows == N",
+      "passed": true,
+      "detail": "100000"
+    },
+    {
+      "name": "locations rows == cepop locations",
+      "passed": true,
+      "detail": "238841 vs 238841"
+    },
+    {
+      "name": "location_id is 0..L-1 in row order",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "all agents start S with timer 0",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "home/work ids in range",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "location types are 0/1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "home_loc -> HOME, work_loc -> WORK",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "cepop loc_type == locations.loc_type",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "occupancy recomputed == cepop occupancy",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "occupancy recomputed == locations.occupancy",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "sum(occupancy) == 2N",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "agents.parquet matches cepop (ids, home, destination)",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "no nulls in agents.parquet",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "locations CRS is EPSG:4326",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "no missing/empty geometries",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "all geometries are valid points",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "coordinates finite",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "lon/lat columns equal geometry",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "all coordinates inside Bengaluru Urban boundary",
+      "passed": true,
+      "detail": "0 outside"
+    },
+    {
+      "name": "capacity >= 1 everywhere",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "occupancy <= capacity everywhere",
+      "passed": true,
+      "detail": "0 violations"
+    },
+    {
+      "name": "home occupancy <= max_agents_per_home",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "no destination above max_share_of_population",
+      "passed": true,
+      "detail": "cap 500"
+    },
+    {
+      "name": "home category 'residential', destination categories configured",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "(osm_type, osm_id, loc_type) unique",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "osm_id integer dtype",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "assignment distance recomputed from EPSG:4326 coords == stored (<=0.01 m)",
+      "passed": true,
+      "detail": "max abs diff 0.000000 m"
+    },
+    {
+      "name": "distances finite and >= 0",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "dedup decision types recognised",
+      "passed": true,
+      "detail": "[]"
+    }
+  ]
+}

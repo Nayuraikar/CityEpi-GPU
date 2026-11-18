@@ -1,0 +1,13 @@
+{
+  "input": "/kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42/population.cepop",
+  "agents": 100000,
+  "locations": 238841,
+  "payload_crc32": "0x24c6bdf8",
+  "seed": 42,
+  "days": 100,
+  "initial_infected": 100,
+  "v0": {"seconds": 0.528148, "daily_checksum": "7a08bb17e8233f0f", "final": [99198,2,8,792]},
+  "v6": null,
+  "v0_v6_equal": null,
+  "pass": true
+}

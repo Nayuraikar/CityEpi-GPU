@@ -96,8 +96,9 @@ def features(name: str, bbox, zoom: int, limit: int) -> dict:
     return {"type": "FeatureCollection", "features": feats, "total_in_view": total, "truncated": truncated}
 
 
+@lru_cache(maxsize=16)   # pure function of immutable bundle data; measured ~0.9 s per uncached call. Bounded: `cell` is client-supplied.
 def density(name: str, cell_deg: float) -> dict:
-    """Square-cell counts over the whole layer extent (for low-zoom rendering)."""
+    """Square-cell counts over the whole layer extent (for low-zoom rendering). The returned dict is shared: callers must not mutate it."""
     if name in ("homes", "homes_occupied", "destinations"):
         df = _locations()
         sel = {"homes": df.loc_type_name == "HOME", "homes_occupied": (df.loc_type_name == "HOME") & (df.occupancy > 0),

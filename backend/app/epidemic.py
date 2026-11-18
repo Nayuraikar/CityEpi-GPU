@@ -4,6 +4,8 @@ from functools import lru_cache
 
 import pandas as pd
 
+from pathlib import PurePosixPath
+
 from .config import RESULTS, SYN_HH
 from .util import clean, read_json, records
 
@@ -56,6 +58,7 @@ def runs() -> dict:
             "seed": meta["seed"],
             "initial_infected": meta["initial_infected"],
             "input": meta["input"],
+            "dataset_id": PurePosixPath(meta["input"]).parent.name,
             "payload_crc32": meta["payload_crc32"],
             "v0_seconds": meta["v0"]["seconds"],
             "v6_seconds_total": meta["v6"]["seconds_total"],
@@ -86,7 +89,15 @@ def seeds() -> dict:
         m = re.match(r"(\w+)_seed(\d+)\.json", p.name)
         j = read_json(p)
         json_seeds.setdefault(m.group(1), {})[int(m.group(2))] = {"v6_present": j.get("v6") is not None}
+    # min/max of peak infectious are not in summary_statistics.csv; derived here from the recorded per-seed rows
+    pk = df.groupby("scenario")["peak_infectious"].agg(["min", "max"])
+    peak_range = {sc: {"peak_min": int(r["min"]), "peak_max": int(r["max"])} for sc, r in pk.iterrows()}
+    inputs = {j.get("input") for p in SEEDS.glob("*_seed*.json") for j in [read_json(p)]}
     return {
+        "backend": "V0 (CPU reference)",
+        "population_inputs": sorted(PurePosixPath(i).parent.name for i in inputs if i),
+        "peak_range": peak_range,
+        "sd_convention": "sample SD (n−1), verified against all_seed_results.csv",
         "per_seed": records(df),
         "summary": records(summ),
         "curves": {k: {str(s): v for s, v in d.items()} for k, d in curves.items()},

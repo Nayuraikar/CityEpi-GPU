@@ -16,10 +16,11 @@ export function getJSON<T>(url: string): Promise<T> {
   return cache.get(url) as Promise<T>
 }
 
-export interface Async<T> { data?: T; error?: string; loading: boolean }
+export interface Async<T> { data?: T; error?: string; loading: boolean; reload?: () => void }
 
 export function useApi<T>(url: string | null): Async<T> {
   const [s, setS] = useState<Async<T>>({ loading: !!url })
+  const [tick, setTick] = useState(0)
   useEffect(() => {
     if (!url) return
     let live = true
@@ -29,6 +30,6 @@ export function useApi<T>(url: string | null): Async<T> {
       (e) => live && setS({ error: String(e.message ?? e), loading: false }),
     )
     return () => { live = false }
-  }, [url])
-  return s
+  }, [url, tick])
+  return { ...s, reload: () => setTick((t) => t + 1) }
 }

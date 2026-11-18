@@ -1,0 +1,481 @@
+{
+  "started_utc": "2026-11-14T22:36:19+00:00",
+  "args": {
+    "geo_dir": "data/processed/geo",
+    "boundary": "data/boundaries/bengaluru_urban.geojson",
+    "n_agents": 100000,
+    "seed": 42,
+    "config": null,
+    "set": [
+      "residential.households={\"enabled\":true,\"size_pmf\":{\"1\":0.15,\"2\":0.20,\"3\":0.25,\"4\":0.25,\"5\":0.10,\"6\":0.05},\"max_households_per_building\":4}"
+    ],
+    "out_dir": "data/synthetic/bengaluru_urban_N100000_seed42_households_v1",
+    "overwrite": false,
+    "days": 100,
+    "sim_seed": 42,
+    "init": 100,
+    "build_dir": "build-extpop",
+    "cuda_arch": null,
+    "no_cuda": false,
+    "require_gpu": true,
+    "no_determinism_check": false,
+    "allow_outside_synthetic": false
+  },
+  "steps": {
+    "environment": {
+      "status": "passed"
+    },
+    "generate": {
+      "status": "passed",
+      "seconds": 29.925267602999156,
+      "returncode": 0,
+      "log": "logs/generate.log"
+    },
+    "independent_validation": {
+      "status": "passed",
+      "seconds": 1.5229423250002583,
+      "returncode": 0,
+      "log": "logs/validate_independent.log"
+    },
+    "determinism_rerun": {
+      "status": "passed",
+      "seconds": 25.5631152140013,
+      "identical": {
+        "population.cepop": true,
+        "locations.geoparquet": true,
+        "agents.parquet": true,
+        "dedup_decisions.parquet": true,
+        "households.parquet": true
+      }
+    },
+    "build": {
+      "status": "passed",
+      "seconds": 0.6928881330004515,
+      "returncode": 0,
+      "log": "logs/cmake_build.log"
+    },
+    "ctest_extpop": {
+      "status": "passed",
+      "seconds": 1.5481020139995962,
+      "returncode": 0,
+      "log": "logs/ctest_extpop.log",
+      "v6_part_skipped": false,
+      "tests_run": [
+        "extpop_reader",
+        "extpop_integration",
+        "extpop_integration_v6"
+      ]
+    },
+    "extpop_run_v0": {
+      "status": "passed",
+      "seconds": 0.5057884830002877,
+      "returncode": 0,
+      "log": "logs/extpop_v0.log"
+    },
+    "extpop_run_v0_v6": {
+      "status": "passed",
+      "seconds": 1.1142543360001582,
+      "returncode": 0,
+      "log": "logs/extpop_v0_v6.log"
+    }
+  },
+  "environment": {
+    "python": "3.13.16",
+    "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "cpu_count": 4,
+    "cmake": "cmake version 3.31.10",
+    "cxx": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "nvcc": "nvcc: NVIDIA (R) Cuda compiler driver",
+    "libs": {
+      "numpy": "2.1.3",
+      "pandas": "2.3.3",
+      "geopandas": "1.2.0",
+      "shapely": "2.2.0",
+      "pyarrow": "23.0.1",
+      "scipy": "1.16.3",
+      "pyproj": "3.8.0",
+      "pyogrio": "0.13.0"
+    },
+    "mem_total_kb": 32869296,
+    "gpu": {
+      "name": "Tesla T4",
+      "driver": "580.178.04",
+      "memory": "15360 MiB",
+      "compute_cap": "7.5"
+    }
+  },
+  "config_sha256": "e132a055c96a39507aafc7dfa28735609455abe1875b3f10009228f1cc9b9e6b",
+  "config": {
+    "schema": "synthpop-config-1",
+    "_comment": "EXPERIMENTAL synthetic-population assumptions. Nothing here is calibrated to census, employment or commuting data. All weights/caps/radii are tunable placeholders; see docs/synthetic_population.md.",
+    "n_agents": 100000,
+    "seed": 42,
+    "residential": {
+      "include_tiers": [
+        "A",
+        "B"
+      ],
+      "tier_factor": {
+        "A": 1.0,
+        "B": 1.0,
+        "C": 1.0
+      },
+      "area_floor_m2": 20.0,
+      "area_cap_m2": 500.0,
+      "alpha": 1.0,
+      "use_levels": false,
+      "levels_cap": 10,
+      "max_agents_per_home": 25,
+      "households": {
+        "enabled": true,
+        "size_pmf": {
+          "1": 0.15,
+          "2": 0.2,
+          "3": 0.25,
+          "4": 0.25,
+          "5": 0.1,
+          "6": 0.05
+        },
+        "max_households_per_building": 4
+      }
+    },
+    "destinations": {
+      "include_categories": [
+        "education",
+        "healthcare",
+        "industrial",
+        "office",
+        "commercial_retail",
+        "civic_public",
+        "leisure"
+      ],
+      "category_weight": {
+        "education": 1.0,
+        "healthcare": 1.0,
+        "industrial": 1.0,
+        "office": 1.0,
+        "commercial_retail": 1.0,
+        "civic_public": 1.0,
+        "leisure": 1.0,
+        "worship": 1.0,
+        "other_amenity": 1.0
+      },
+      "leisure_values": [
+        "park",
+        "garden",
+        "sports_centre",
+        "stadium",
+        "swimming_pool",
+        "fitness_centre",
+        "playground",
+        "recreation_ground"
+      ],
+      "area_floor_m2": 50.0,
+      "area_cap_m2": 5000.0,
+      "alpha": 0.5,
+      "poi_default_area_m2": 100.0,
+      "min_capacity": 3,
+      "capacity_slack": 3.0,
+      "max_share_of_population": 0.005
+    },
+    "dedup": {
+      "name_merge_radius_m": 50.0,
+      "log_radius_m": 10.0,
+      "merge_unnamed_same_category_within_m": 0.0,
+      "layer_priority": [
+        "healthcare",
+        "amenities",
+        "leisure",
+        "buildings"
+      ]
+    },
+    "assignment": {
+      "kernel": {
+        "type": "exponential",
+        "scale_m": 5000.0,
+        "power_exponent": 2.0,
+        "power_min_distance_m": 100.0
+      },
+      "candidate_k": 30,
+      "radius_m": 15000.0,
+      "fallback_radius_multipliers": [
+        2.0,
+        4.0
+      ],
+      "max_rounds": 200,
+      "fail_on_unassigned": true
+    },
+    "sensitivity": {
+      "enabled": true,
+      "capacity_slack": [
+        1.5,
+        2.0,
+        3.0,
+        5.0,
+        10.0,
+        1000000000.0
+      ]
+    },
+    "audit_reference": {
+      "tier_A": 24130,
+      "tier_B": 182348,
+      "tier_C": 606807
+    },
+    "vocab": {
+      "res_explicit": [
+        "apartments",
+        "bungalow",
+        "detached",
+        "dormitory",
+        "duplex",
+        "house",
+        "houses",
+        "residential",
+        "semidetached_house",
+        "terrace",
+        "villa"
+      ],
+      "edu_amenity": [
+        "childcare",
+        "college",
+        "driving_school",
+        "kindergarten",
+        "language_school",
+        "music_school",
+        "research_institute",
+        "school",
+        "training",
+        "university"
+      ],
+      "edu_building": [
+        "college",
+        "kindergarten",
+        "school",
+        "university"
+      ],
+      "health_amenity": [
+        "clinic",
+        "dentist",
+        "doctors",
+        "hospital",
+        "nursing_home",
+        "pharmacy",
+        "veterinary"
+      ],
+      "health_building": [
+        "clinic",
+        "hospital"
+      ],
+      "ind_building": [
+        "factory",
+        "industrial",
+        "manufacture",
+        "storage_tank",
+        "warehouse"
+      ],
+      "office_building": [
+        "office"
+      ],
+      "office_amenity": [
+        "coworking_space"
+      ],
+      "com_building": [
+        "commercial",
+        "kiosk",
+        "mall",
+        "retail",
+        "shop",
+        "supermarket"
+      ],
+      "retail_amenity": [
+        "atm",
+        "bank",
+        "bar",
+        "bureau_de_change",
+        "cafe",
+        "car_rental",
+        "car_wash",
+        "cinema",
+        "fast_food",
+        "food_court",
+        "fuel",
+        "marketplace",
+        "pub",
+        "restaurant",
+        "theatre"
+      ],
+      "civic_amenity": [
+        "bus_station",
+        "community_centre",
+        "courthouse",
+        "fire_station",
+        "government",
+        "library",
+        "police",
+        "post_office",
+        "public_building",
+        "townhall"
+      ],
+      "civic_building": [
+        "civic",
+        "government",
+        "public",
+        "train_station",
+        "transportation"
+      ],
+      "worship_building": [
+        "chapel",
+        "church",
+        "mosque",
+        "religious",
+        "shrine",
+        "synagogue",
+        "temple"
+      ],
+      "act_tag_cols": [
+        "amenity",
+        "shop",
+        "office",
+        "healthcare",
+        "craft",
+        "tourism",
+        "leisure"
+      ],
+      "category_order": [
+        "education",
+        "healthcare",
+        "industrial",
+        "office",
+        "commercial_retail",
+        "civic_public",
+        "worship",
+        "leisure",
+        "other_amenity"
+      ]
+    }
+  },
+  "input_checksums": {
+    "boundary": "080d882fecdf28cf865b9d1fa9d8aead193f890cb5d6d6db5f3d1588b1666442",
+    "buildings": "1457cf7ad8680fe2ab5366ffcc19628fbf4964cb143efcaab2653342388a6c11",
+    "landuse": "3df74051b1dc7be8dc4d7321ba37ed25c84ef38ec9aa0b5fdc93dc99431462a4",
+    "amenities": "f136a5ffb618ae6bbdb6b0f78a09adeb5eb3d3ec3adcf1bb34359828d356729c",
+    "healthcare": "b5a3ddcb81f2e4c5687c5ceb5e2d1c05fbb3dc934a18f384e705248b26208134",
+    "leisure": "59884f9a237c84b7d7dedfa96100bcedc435fde8ad7d011b673833e127fa79ab"
+  },
+  "counts": {
+    "agents": 100000,
+    "homes": 206478,
+    "destinations": 32363,
+    "locations": 238841
+  },
+  "generator_validation": {
+    "passed": true,
+    "n_checks": 44
+  },
+  "generator_timings_s": {
+    "load": 14.539,
+    "residential": 1.42,
+    "destinations": 4.889,
+    "assignment": 0.824,
+    "cap_sensitivity": 4.842,
+    "export": 0.65,
+    "validate": 0.577
+  },
+  "build": {
+    "v6_enabled": true,
+    "cuda_arch": "75",
+    "configure": [
+      "cmake",
+      "-S",
+      "/kaggle/working/CityEpi-GPU",
+      "-B",
+      "/kaggle/working/CityEpi-GPU/build-extpop",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DENABLE_CUDA_V6=ON",
+      "-DCMAKE_CUDA_ARCHITECTURES=75"
+    ]
+  },
+  "extpop_v0": {
+    "input": "/kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42_households_v1/population.cepop",
+    "agents": 100000,
+    "locations": 238841,
+    "payload_crc32": "0xb5d0eac9",
+    "seed": 42,
+    "days": 100,
+    "initial_infected": 100,
+    "v0": {
+      "seconds": 0.466972,
+      "daily_checksum": "b213860e1d97b2c8",
+      "final": [
+        65371,
+        1257,
+        2343,
+        31029
+      ]
+    },
+    "v6": null,
+    "v0_v6_equal": null,
+    "pass": true
+  },
+  "extpop_v0_v6": {
+    "input": "/kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42_households_v1/population.cepop",
+    "agents": 100000,
+    "locations": 238841,
+    "payload_crc32": "0xb5d0eac9",
+    "seed": 42,
+    "days": 100,
+    "initial_infected": 100,
+    "v0": {
+      "seconds": 0.503974,
+      "daily_checksum": "b213860e1d97b2c8",
+      "final": [
+        65371,
+        1257,
+        2343,
+        31029
+      ]
+    },
+    "v6": {
+      "device": "Tesla T4",
+      "options": "base",
+      "seconds_total": 0.042164,
+      "seconds_events": 0.039918,
+      "daily_checksum": "b213860e1d97b2c8",
+      "final": [
+        65371,
+        1257,
+        2343,
+        31029
+      ]
+    },
+    "v0_v6_equal": true,
+    "pass": true
+  },
+  "verdict": "ALL_PASSED",
+  "total_seconds": 61.85,
+  "output_checksums": {
+    "agents.parquet": "82413bfbfc2c406faef7475ebdae82dbb4a753b6205dfe1e67fb022f7fff78b5",
+    "config.json": "e5fb5bd064051a06feb5ba30b3b27787234cdff20424cb8c50bee8c65479fd74",
+    "daily_v0.csv": "f8d2d7dd92581ad67692719aacae303392166db305c0425e32aa3fdd47191f21",
+    "daily_v6.csv": "f8d2d7dd92581ad67692719aacae303392166db305c0425e32aa3fdd47191f21",
+    "dedup_decisions.parquet": "b13446086ae230e7fe5bc09ce6bfeb7eae209e8893e4d14e58e80af6632ef2cf",
+    "extpop_v0.json": "f7c3723d63fc479c7eca9c5d927969deee73c02ad2fcf39649f3240f1dee7978",
+    "extpop_v0_v6.json": "82e6541e89b02502339a4dd2c176c22c5c66639c7bb93b261374d3d68f15a66b",
+    "households.parquet": "f783d7126645dc6beadfc6269cea41dadc1e0f9ded9ff198faf639a44ef912ae",
+    "locations.geoparquet": "35a0bf6768888ac8847d2f6832faca83faa9a54f60b271cb608d6ad349d23360",
+    "manifest.json": "4be37fddceca44503984eef6e063b5e28f2473f75c879735c11c2c104226bd2e",
+    "population.cepop": "0bd14209ddcd867c6754577b2a578e9703fe1f9a0912acefee4f093215392ecf",
+    "report.json": "6d8e6759eb0e719a5a485f91ed85c8b58d62b8599aec7d897a9eb83b5d19e797",
+    "report.md": "a3505d16d66d516cead457f3aed9be505bc0178d6620f2f61018d412a821a564",
+    "validation_independent.json": "88f9f907539cc536251ea83c050bbca98babe7d8d76382a0643387ad5c370cfc",
+    "logs/cmake_build.log": "6be6c5ee993ce658446a2be7746ccf11a9da4e728effdca4d8790891341871c0",
+    "logs/cmake_configure.log": "b7048833d58a6580b23caa82d18a4c972796aecb9b515b879f5da4061e0116fd",
+    "logs/ctest_extpop.log": "be359d31ffb6be312f4788425ea11bd8dfce8de4c9c707c5e121ea509c9af035",
+    "logs/extpop_v0.log": "d4d1247676236b73932e79abd251ddb8f22d1c125ab7665aac641d89e4e58ed3",
+    "logs/extpop_v0_v6.log": "7abe15b83262580631456304fd942f2bda937a1a9dcef81bf21ab20d339b2557",
+    "logs/generate.log": "61915350727933d78afa3a34809aada681b52313a9403d4205ed47f2ca8f5a4d",
+    "logs/generate_rerun.log": "8d6129469293ed0eadfc97627dc624cef206d37773d28c1ef30ddb3efa3059df",
+    "logs/validate_independent.log": "f6fe92f8ea6810b25b5b1f9c9dafd76547f9daf1a95a052af5a699e425f46dc2"
+  }
+}

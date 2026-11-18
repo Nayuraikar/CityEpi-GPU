@@ -1,15 +1,25 @@
-"""CityEpi-GPU dashboard API. Read-only: serves files from ui_data_bundle, runs no simulation."""
+"""CityEpi-GPU API. Recorded-results endpoints are read-only (files from ui_data_bundle); /api/sim/* launches the C++ simulator."""
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 
-from . import benchmarks, epidemic, geo, population
+from . import benchmarks, epidemic, geo, perf, population
+from .sim import api as sim_api
 from .config import BUNDLE, SYN_HH, SYN_LEGACY
 from .util import clean, read_json
 
-app = FastAPI(title="CityEpi-GPU Dashboard API", version="0.1.0")
+@asynccontextmanager
+async def lifespan(_app):
+    yield
+    sim_api.shutdown()      # terminate any still-running simulation processes
+
+
+app = FastAPI(title="CityEpi-GPU Dashboard API", version="0.1.0", lifespan=lifespan)
 app.add_middleware(GZipMiddleware, minimum_size=1024)
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET"], allow_headers=["*"])
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET", "POST", "DELETE"], allow_headers=["*"])
+app.include_router(sim_api.router)          # simulation execution: /api/sim/* (separate from the read-only endpoints below)
 
 
 @app.get("/api/health")
@@ -63,19 +73,23 @@ def overview():
 
 def project_status():
     b = benchmarks.benchmarks()
+    hh = population.report()["validation"]
+    lg = read_json(SYN_LEGACY / "report.json")["validation"]
+    runs = epidemic.runs()
+    n_eq = sum(1 for r in runs.values() if r["v0_v6_equal"])
     return [
-        {"item": "Synthetic population generation (geographic + household)", "state": "complete",
-         "detail": "44/44 independent validation checks passed"},
-        {"item": "V0 CPU reference ↔ V6 CUDA equivalence", "state": "complete",
-         "detail": "Daily-checksum equal on all 5 recorded scenarios"},
+        {"item": "Synthetic population generation (geographic + household)", "state": "complete" if hh["passed"] and lg["passed"] else "partial",
+         "detail": f"Independent validation: household dataset {hh['n_checks']} checks, legacy dataset {lg['n_checks']} checks (recorded in each report.json)"},
+        {"item": "V0 CPU reference ↔ V6 CUDA equivalence", "state": "complete" if n_eq == len(runs) else "partial",
+         "detail": f"Daily-checksum equal on {n_eq}/{len(runs)} recorded scenarios"},
         {"item": "V5 / V6 CUDA benchmarks", "state": "complete",
-         "detail": f"Tesla T4, commit {(b['git_commit'] or '')[:7]}"},
+         "detail": f"Recorded on Kaggle Tesla T4, commit {(b['git_commit'] or '')[:7]}"},
         {"item": "Multi-seed validation", "state": "complete",
-         "detail": f"{epidemic.seeds()['n_seeds']} seeds × 3 scenarios recorded with V0 CPU reference only (no V6 runs in these artifacts)"},
+         "detail": f"{epidemic.seeds()['n_seeds']} seeds × 3 transmission scenarios, V0 CPU reference only (no V6 runs in these artifacts); household population only"},
         {"item": "Transmission parameters (β)", "state": "gap",
-         "detail": "Numeric β values are not recorded in the bundle; scenarios are labelled low/baseline/high only"},
-        {"item": "Dashboard-triggered simulation", "state": "not-implemented",
-         "detail": "Intentionally absent: dashboard visualises recorded results only"},
+         "detail": "Numeric β values are not recorded with these results; scenarios are labelled low/baseline/high only"},
+        {"item": "Simulation Studio (live runs)", "state": "complete",
+         "detail": "Launches the C++ extpop_run on this host (V0 CPU; V6 only where a CUDA build is available). Live runs are separate from recorded results"},
     ]
 
 
@@ -97,6 +111,12 @@ def population_explorer():
 @app.get("/api/benchmarks")
 def bench():
     return benchmarks.benchmarks()
+
+
+@app.get("/api/perf")
+def perf_lab():
+    """CPU (Apple M1) + OpenACC (Kaggle) benchmark artifacts and correctness evidence for the PAGP Performance Lab."""
+    return perf.perf()
 
 
 # ---------------- GIS ----------------

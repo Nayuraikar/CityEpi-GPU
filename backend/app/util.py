@@ -1,5 +1,6 @@
 import json
 import math
+import re
 from pathlib import Path
 from typing import Any
 
@@ -26,26 +27,44 @@ def read_json(p: Path) -> Any:
         return json.load(f)
 
 
-def read_csv_with_meta(p: Path) -> tuple[pd.DataFrame, dict[str, str]]:
-    """CSV whose leading '# key=value' lines are environment metadata."""
+def _parse_header(head: list[str]) -> dict[str, str]:
     meta: dict[str, str] = {}
     notes: list[str] = []
+    for line in head:
+        body = line[1:].strip()
+        if body.startswith("note:"):
+            notes.append(body[5:].strip())
+        elif body.startswith("kernel_info"):
+            meta.setdefault("kernel_info", "")
+            meta["kernel_info"] += body + "\n"
+        elif "=" in body:
+            k, _, v = body.partition("=")
+            meta[k.strip()] = v.strip()
+    if notes:
+        meta["notes"] = " | ".join(notes)
+    text = "".join(head)
+    for key, pat in (("_days", r"\bdays=(\d+)"), ("_reps", r"\b(?:reps|repetitions)=(\d+)"), ("_max_threads", r"\bmax_threads=(\d+)")):
+        m = re.search(pat, text)          # header values are parsed, never assumed
+        if m:
+            meta[key] = m.group(1)
+    return meta
+
+
+def read_header_meta(p: Path) -> dict[str, str]:
+    """Leading '# key=value' lines of a CSV or of a log that echoes one."""
+    head: list[str] = []
     with open(p) as f:
         for line in f:
             if not line.startswith("#"):
                 break
-            body = line[1:].strip()
-            if body.startswith("note:"):
-                notes.append(body[5:].strip())
-            elif body.startswith("kernel_info"):
-                meta.setdefault("kernel_info", "")
-                meta["kernel_info"] += body + "\n"
-            elif "=" in body:
-                k, _, v = body.partition("=")
-                meta[k.strip()] = v.strip()
-    if notes:
-        meta["notes"] = " | ".join(notes)
-    df = pd.read_csv(p, comment="#", na_values=["n/a", "inf"])
+            head.append(line)
+    return _parse_header(head)
+
+
+def read_csv_with_meta(p: Path) -> tuple[pd.DataFrame, dict[str, str]]:
+    """CSV whose leading '# key=value' lines are environment metadata."""
+    meta = read_header_meta(p)
+    df = pd.read_csv(p, comment="#", na_values=["n/a", "inf", "-"])
     return df, meta
 
 

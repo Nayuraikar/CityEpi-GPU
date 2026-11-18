@@ -4,7 +4,7 @@ from functools import lru_cache
 import pandas as pd
 
 from .config import RESULTS
-from .util import read_csv_with_meta, records
+from .util import read_csv_with_meta, read_header_meta, records
 
 V5 = RESULTS / "kaggle_v5"
 V6 = RESULTS / "kaggle_v6"
@@ -17,6 +17,8 @@ def _txt(p):
 @lru_cache(maxsize=1)
 def benchmarks() -> dict:
     v5, v5meta = read_csv_with_meta(V5 / "v5_benchmark.csv")
+    if not v5meta and (V5 / "v5_benchmark.log").exists():   # the V5 CSV has no header; its provenance is echoed in the log
+        v5meta = read_header_meta(V5 / "v5_benchmark.log")
     v6, v6meta = read_csv_with_meta(V6 / "v6_benchmark.csv")
     v6all, _ = read_csv_with_meta(V6 / "v6_benchmark_all.csv")
     prof = pd.read_csv(V6 / "v6_profile.csv")

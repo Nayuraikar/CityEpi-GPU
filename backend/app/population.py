@@ -13,6 +13,38 @@ def report() -> dict:
     return read_json(SYN_HH / "report.json")
 
 
+def _dist_hist(dist) -> list[dict]:
+    edges = [0, 100, 250, 500, 750, 1000, 1500, 2000, 3000, 5000, 10000, np.inf]
+    cnt, _ = np.histogram(dist, bins=edges)
+    return [
+        {"bin": f"{int(edges[i])}–{int(edges[i+1]) if np.isfinite(edges[i+1]) else '∞'} m", "agents": int(cnt[i])}
+        for i in range(len(cnt))
+    ]
+
+
+def _identity(d, kind: str, label: str) -> dict:
+    """Dataset identity + headline figures, read from the dataset's own report.json/locations/agents."""
+    rep = read_json(d / "report.json")
+    loc = pd.read_parquet(d / "locations.geoparquet", columns=["loc_type_name", "occupancy"])
+    agents = pd.read_parquet(d / "agents.parquet", columns=["distance_m"])
+    hh = rep.get("households")
+    dm = rep["assignment"]["distance_m"]
+    return {
+        "kind": kind, "label": label, "dataset_id": d.name,
+        "agents": rep["counts"]["agents"], "locations": rep["counts"]["locations"],
+        "candidate_homes": rep["counts"]["homes"], "destinations": rep["counts"]["destinations"],
+        "occupied_homes": int(((loc.loc_type_name == "HOME") & (loc.occupancy > 0)).sum()),
+        "households": hh["households"] if hh else None,
+        "mean_household_size": hh["mean_household_size"] if hh else None,
+        "seed": rep["config"]["seed"], "tool_version": rep["tool_version"], "config_sha256": rep["config_sha256"],
+        "cepop_crc32": rep["outputs"]["cepop_payload_crc32"],
+        "validation": {"passed": rep["validation"]["passed"], "n_checks": rep["validation"]["n_checks"]},
+        "distance_m": {k: dm[k] for k in ("mean", "p50", "p95", "max")},
+        "distance_histogram": _dist_hist(agents["distance_m"].to_numpy()),
+        "destinations_used": rep["assignment"]["destinations_used"],
+    }
+
+
 @lru_cache(maxsize=1)
 def explorer() -> dict:
     rep = report()
@@ -83,6 +115,10 @@ def explorer() -> dict:
     val = report()["validation"]
     return clean(
         {
+            "datasets": [
+                _identity(SYN_HH, "household", "Household-enabled population"),
+                _identity(SYN_LEGACY, "legacy", "Legacy population (no explicit households)"),
+            ],
             "counts": rep["counts"],
             "households": {
                 "count": rep["households"]["households"],
@@ -97,6 +133,9 @@ def explorer() -> dict:
                 "nonzero": rep["distributions"]["home_occupancy_nonzero"],
                 "unused_homes": rep["distributions"]["unused_homes"],
                 "total_homes": int(len(homes)),
+                "households_per_building_cap": rep["households"]["households_per_building_cap"],
+                "buildings_at_household_cap": rep["households"]["buildings_at_household_cap"],
+                "households_per_occupied_building": rep["households"]["households_per_occupied_building"],
                 "occupied_homes": int((occ > 0).sum()),
             },
             "destinations": {

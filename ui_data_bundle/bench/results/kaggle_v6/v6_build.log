@@ -1,0 +1,348 @@
+[  2%] Building CXX object CMakeFiles/cityepi_core.dir/src/common/simulation.cpp.o
+[  5%] Building CXX object CMakeFiles/cityepi_core.dir/src/common/contact.cpp.o
+[  7%] Building CXX object CMakeFiles/cityepi_core.dir/src/common/transitions.cpp.o
+[ 10%] Building CXX object CMakeFiles/cityepi_core.dir/src/common/rng.cpp.o
+[ 12%] Building CXX object CMakeFiles/cityepi_core.dir/src/v1_ilp/v1_simulation.cpp.o
+[ 15%] Building CXX object CMakeFiles/cityepi_core.dir/src/v2_openmp/v2_simulation.cpp.o
+[ 17%] Linking CXX static library libcityepi_core.a
+[ 17%] Built target cityepi_core
+[ 20%] Building CXX object CMakeFiles/cityepi_v3.dir/src/v3_simd/v3_simulation.cpp.o
+[ 22%] Building CXX object CMakeFiles/cityepi.dir/src/common/main.cpp.o
+[ 25%] Linking CXX executable cityepi
+/kaggle/working/CityEpi-GPU/src/v3_simd/v3_simulation.cpp: In function ‘Result run_simulation_v3(const Params&, bool)’:
+/kaggle/working/CityEpi-GPU/src/v3_simd/v3_simulation.cpp:147:49: warning: parameter ‘use_simd’ set but not used [-Wunused-but-set-parameter]
+  147 | Result run_simulation_v3(const Params& p0, bool use_simd) {
+      |                                            ~~~~~^~~~~~~~
+[ 25%] Built target cityepi
+[ 27%] Building CXX object CMakeFiles/test_v0.dir/tests/test_v0.cpp.o
+[ 30%] Building CXX object CMakeFiles/cityepi_v3.dir/src/v3_simd/v3_hybrid.cpp.o
+/kaggle/working/CityEpi-GPU/src/v3_simd/v3_hybrid.cpp: In function ‘Result run_simulation_v3_hybrid(const Params&, bool)’:
+/kaggle/working/CityEpi-GPU/src/v3_simd/v3_hybrid.cpp:85:56: warning: parameter ‘use_simd’ set but not used [-Wunused-but-set-parameter]
+   85 | Result run_simulation_v3_hybrid(const Params& p0, bool use_simd) {
+      |                                                   ~~~~~^~~~~~~~
+[ 32%] Linking CXX executable test_v0
+[ 32%] Built target test_v0
+[ 35%] Linking CXX static library libcityepi_v3.a
+[ 37%] Building CXX object CMakeFiles/test_v1.dir/tests/test_v1.cpp.o
+[ 37%] Built target cityepi_v3
+[ 40%] Building CXX object CMakeFiles/test_v2.dir/tests/test_v2.cpp.o
+/kaggle/working/CityEpi-GPU/tests/test_v2.cpp: In function ‘void all_cfgs(const Params&, bool)’:
+/kaggle/working/CityEpi-GPU/tests/test_v2.cpp:21:17: warning: dangling pointer to an unnamed temporary may be used [-Wdangling-pointer=]
+   21 |                 for (int ch : chunks ? std::initializer_list<int>{0, 1, 7, 64} : std::initializer_list<int>{0}) {
+      |                 ^~~
+/kaggle/working/CityEpi-GPU/tests/test_v2.cpp:21:78: note: unnamed temporary defined here
+   21 |                 for (int ch : chunks ? std::initializer_list<int>{0, 1, 7, 64} : std::initializer_list<int>{0}) {
+      |                                                                              ^
+/kaggle/working/CityEpi-GPU/tests/test_v2.cpp:21:26: warning: dangling pointer to an unnamed temporary may be used [-Wdangling-pointer=]
+   21 |                 for (int ch : chunks ? std::initializer_list<int>{0, 1, 7, 64} : std::initializer_list<int>{0}) {
+      |                          ^~
+/kaggle/working/CityEpi-GPU/tests/test_v2.cpp:21:78: note: unnamed temporary defined here
+   21 |                 for (int ch : chunks ? std::initializer_list<int>{0, 1, 7, 64} : std::initializer_list<int>{0}) {
+      |                                                                              ^
+[ 42%] Linking CXX executable test_v1
+[ 45%] Linking CXX executable test_v2
+[ 45%] Built target test_v1
+[ 47%] Building CXX object CMakeFiles/test_v3.dir/tests/test_v3.cpp.o
+[ 47%] Built target test_v2
+[ 50%] Building CXX object CMakeFiles/bench_v3.dir/bench/bench_v3.cpp.o
+[ 52%] Linking CXX executable test_v3
+[ 52%] Built target test_v3
+[ 55%] Building CXX object CMakeFiles/bench_v2.dir/bench/bench_v2.cpp.o
+[ 57%] Linking CXX executable bench_v3
+[ 57%] Built target bench_v3
+[ 60%] Building CXX object CMakeFiles/bench_v0v1.dir/bench/bench.cpp.o
+[ 62%] Linking CXX executable bench_v2
+[ 62%] Built target bench_v2
+[ 65%] Building CUDA object CMakeFiles/cityepi_v5.dir/src/v5_cuda/v5_simulation.cu.o
+[ 67%] Linking CXX executable bench_v0v1
+[ 67%] Built target bench_v0v1
+[ 70%] Building CUDA object CMakeFiles/cityepi_v6.dir/src/v6_cuda/v6_simulation.cu.o
+[ 72%] Building CXX object CMakeFiles/cityepi_v5.dir/src/v5_cuda/v5_host_info.cpp.o
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb1ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb1ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 15.893 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb1ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb1ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 13.992 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb1ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb1ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 34 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 12.515 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb1ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb1ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 34 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 12.858 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb0ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb0ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 9.389 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb0ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb0ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 26 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 8.267 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb0ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb0ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 7.887 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi1024ELb1EEEvPKhPKjPjPdS5_mdd' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi1024ELb1EEEvPKhPKjPjPdS5_mdd
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 0 barriers, 416 bytes cmem[0], 88 bytes cmem[2]
+ptxas info    : Compile time = 11.356 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb0ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi1024ELb0ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 8.215 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi1024ELb0EEEvPKhPKjPjPdS5_mdd' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi1024ELb0EEEvPKhPKjPjPdS5_mdd
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 0 barriers, 416 bytes cmem[0], 88 bytes cmem[2]
+ptxas info    : Compile time = 11.218 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb1ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb1ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 13.767 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb1ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb1ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 13.511 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb1ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb1ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 34 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 13.094 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb1ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb1ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 34 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 12.910 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb0ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb0ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 26 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 8.738 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb0ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb0ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 26 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 8.296 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb0ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb0ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 7.888 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi512ELb1EEEvPKhPKjPjPdS5_mdd' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi512ELb1EEEvPKhPKjPjPdS5_mdd
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 0 barriers, 416 bytes cmem[0], 88 bytes cmem[2]
+ptxas info    : Compile time = 11.251 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb0ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi512ELb0ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 7.633 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi512ELb0EEEvPKhPKjPjPdS5_mdd' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi512ELb0EEEvPKhPKjPjPdS5_mdd
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 0 barriers, 416 bytes cmem[0], 88 bytes cmem[2]
+ptxas info    : Compile time = 12.154 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb1ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb1ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 14.548 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb1ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb1ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 13.562 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb1ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb1ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 34 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 13.282 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb1ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb1ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 34 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 13.177 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb0ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb0ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 26 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 8.308 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb0ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb0ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 26 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 7.888 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb0ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb0ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 7.709 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi256ELb1EEEvPKhPKjPjPdS5_mdd' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi256ELb1EEEvPKhPKjPjPdS5_mdd
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 0 barriers, 416 bytes cmem[0], 88 bytes cmem[2]
+ptxas info    : Compile time = 12.161 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb0ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi256ELb0ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 7.136 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi256ELb0EEEvPKhPKjPjPdS5_mdd' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi256ELb0EEEvPKhPKjPjPdS5_mdd
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 0 barriers, 416 bytes cmem[0], 88 bytes cmem[2]
+ptxas info    : Compile time = 10.924 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb1ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb1ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 29 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 14.288 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb1ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb1ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 13.700 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb1ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb1ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 34 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 13.635 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb1ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb1ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 34 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 12.855 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb0ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb0ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 26 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 7.924 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb0ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb0ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 26 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 7.732 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb0ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb0ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 7.757 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi128ELb1EEEvPKhPKjPjPdS5_mdd' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi128ELb1EEEvPKhPKjPjPdS5_mdd
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 0 barriers, 416 bytes cmem[0], 88 bytes cmem[2]
+ptxas info    : Compile time = 11.554 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb0ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi128ELb0ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 8.339 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi128ELb0EEEvPKhPKjPjPdS5_mdd' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi128ELb0EEEvPKhPKjPjPdS5_mdd
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 0 barriers, 416 bytes cmem[0], 88 bytes cmem[2]
+ptxas info    : Compile time = 11.602 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb1ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb1ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 29 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 13.913 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb1ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb1ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 29 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 13.569 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb1ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb1ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 34 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 13.389 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb1ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb1ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 34 registers, used 1 barriers, 16 bytes smem, 436 bytes cmem[0]
+ptxas info    : Compile time = 12.818 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb0ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb0ELb1ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 8.159 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb0ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb0ELb1ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 8.206 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb0ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb0ELb0ELb1EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 8.155 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi64ELb1EEEvPKhPKjPjPdS5_mdd' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi64ELb1EEEvPKhPKjPjPdS5_mdd
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 0 barriers, 416 bytes cmem[0], 88 bytes cmem[2]
+ptxas info    : Compile time = 12.321 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb0ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b17agent_step_kernelILi64ELb0ELb0ELb0EEEvPhPtPKjS4_PKdPjS7_S4_mmtt
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 0 barriers, 436 bytes cmem[0]
+ptxas info    : Compile time = 7.670 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi64ELb0EEEvPKhPKjPjPdS5_mdd' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b20location_prob_kernelILi64ELb0EEEvPKhPKjPjPdS5_mdd
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 0 barriers, 416 bytes cmem[0], 88 bytes cmem[2]
+ptxas info    : Compile time = 11.731 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b16prob_eval_kernelILb0EEEvPKdPKjS4_Pdm' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b16prob_eval_kernelILb0EEEvPKdPKjS4_Pdm
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 26 registers, used 0 barriers, 392 bytes cmem[0], 88 bytes cmem[2]
+ptxas info    : Compile time = 10.565 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b16prob_eval_kernelILb1EEEvPKdPKjS4_Pdm' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b16prob_eval_kernelILb1EEEvPKdPKjS4_Pdm
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 26 registers, used 0 barriers, 392 bytes cmem[0], 88 bytes cmem[2]
+ptxas info    : Compile time = 14.846 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b12draws_kernelEmPKjjjPdm' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b12draws_kernelEmPKjjjPdm
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 12 registers, used 0 barriers, 392 bytes cmem[0]
+ptxas info    : Compile time = 5.267 ms
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b12probe_kernelEPj' for 'sm_75'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__89a7667b_16_v6_simulation_cu_e26eef4b12probe_kernelEPj
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 4 registers, used 0 barriers, 360 bytes cmem[0]
+ptxas info    : Compile time = 0.904 ms
+[ 75%] Linking CXX static library libcityepi_v5.a
+[ 75%] Built target cityepi_v5
+[ 77%] Building CXX object CMakeFiles/test_v5.dir/tests/test_v5.cpp.o
+[ 80%] Linking CXX executable test_v5
+[ 80%] Built target test_v5
+[ 82%] Building CXX object CMakeFiles/bench_v5.dir/bench/bench_v5.cpp.o
+[ 85%] Linking CXX executable bench_v5
+[ 85%] Built target bench_v5
+[ 87%] Building CXX object CMakeFiles/cityepi_v6.dir/src/v6_cuda/v6_host_info.cpp.o
+[ 90%] Linking CXX static library libcityepi_v6.a
+[ 90%] Built target cityepi_v6
+[ 92%] Building CXX object CMakeFiles/test_v6.dir/tests/test_v6.cpp.o
+[ 95%] Building CXX object CMakeFiles/bench_v6.dir/bench/bench_v6.cpp.o
+[ 97%] Linking CXX executable test_v6
+[ 97%] Built target test_v6
+[100%] Linking CXX executable bench_v6
+[100%] Built target bench_v6

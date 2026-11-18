@@ -1,0 +1,465 @@
+{
+  "started_utc": "2026-11-14T22:19:52+00:00",
+  "args": {
+    "geo_dir": "data/processed/geo",
+    "boundary": "data/boundaries/bengaluru_urban.geojson",
+    "n_agents": 100000,
+    "seed": 42,
+    "config": null,
+    "set": [],
+    "out_dir": null,
+    "overwrite": false,
+    "days": 100,
+    "sim_seed": 42,
+    "init": 100,
+    "build_dir": "build-extpop",
+    "cuda_arch": null,
+    "no_cuda": false,
+    "require_gpu": true,
+    "no_determinism_check": false,
+    "allow_outside_synthetic": false
+  },
+  "steps": {
+    "environment": {
+      "status": "passed"
+    },
+    "generate": {
+      "status": "passed",
+      "seconds": 30.248315626000476,
+      "returncode": 0,
+      "log": "logs/generate.log"
+    },
+    "independent_validation": {
+      "status": "passed",
+      "seconds": 1.5554435009998997,
+      "returncode": 0,
+      "log": "logs/validate_independent.log"
+    },
+    "determinism_rerun": {
+      "status": "passed",
+      "seconds": 25.03578625099908,
+      "identical": {
+        "population.cepop": true,
+        "locations.geoparquet": true,
+        "agents.parquet": true,
+        "dedup_decisions.parquet": true
+      }
+    },
+    "build": {
+      "status": "passed",
+      "seconds": 21.951926208999794,
+      "returncode": 0,
+      "log": "logs/cmake_build.log"
+    },
+    "ctest_extpop": {
+      "status": "passed",
+      "seconds": 1.5526236589994369,
+      "returncode": 0,
+      "log": "logs/ctest_extpop.log",
+      "v6_part_skipped": false,
+      "tests_run": [
+        "extpop_reader",
+        "extpop_integration",
+        "extpop_integration_v6"
+      ]
+    },
+    "extpop_run_v0": {
+      "status": "passed",
+      "seconds": 0.5713382710000587,
+      "returncode": 0,
+      "log": "logs/extpop_v0.log"
+    },
+    "extpop_run_v0_v6": {
+      "status": "passed",
+      "seconds": 1.0796258489990578,
+      "returncode": 0,
+      "log": "logs/extpop_v0_v6.log"
+    }
+  },
+  "environment": {
+    "python": "3.13.16",
+    "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "cpu_count": 4,
+    "cmake": "cmake version 3.31.10",
+    "cxx": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "nvcc": "nvcc: NVIDIA (R) Cuda compiler driver",
+    "libs": {
+      "numpy": "2.1.3",
+      "pandas": "2.3.3",
+      "geopandas": "1.2.0",
+      "shapely": "2.2.0",
+      "pyarrow": "23.0.1",
+      "scipy": "1.16.3",
+      "pyproj": "3.8.0",
+      "pyogrio": "0.13.0"
+    },
+    "mem_total_kb": 32869296,
+    "gpu": {
+      "name": "Tesla T4",
+      "driver": "580.178.04",
+      "memory": "15360 MiB",
+      "compute_cap": "7.5"
+    }
+  },
+  "config_sha256": "c7a28882dae9ce4f80998c9230bbfd901e6f5fc52ac1bf3bac01c06ba79d7250",
+  "config": {
+    "schema": "synthpop-config-1",
+    "_comment": "EXPERIMENTAL synthetic-population assumptions. Nothing here is calibrated to census, employment or commuting data. All weights/caps/radii are tunable placeholders; see docs/synthetic_population.md.",
+    "n_agents": 100000,
+    "seed": 42,
+    "residential": {
+      "include_tiers": [
+        "A",
+        "B"
+      ],
+      "tier_factor": {
+        "A": 1.0,
+        "B": 1.0,
+        "C": 1.0
+      },
+      "area_floor_m2": 20.0,
+      "area_cap_m2": 500.0,
+      "alpha": 1.0,
+      "use_levels": false,
+      "levels_cap": 10,
+      "max_agents_per_home": 25
+    },
+    "destinations": {
+      "include_categories": [
+        "education",
+        "healthcare",
+        "industrial",
+        "office",
+        "commercial_retail",
+        "civic_public",
+        "leisure"
+      ],
+      "category_weight": {
+        "education": 1.0,
+        "healthcare": 1.0,
+        "industrial": 1.0,
+        "office": 1.0,
+        "commercial_retail": 1.0,
+        "civic_public": 1.0,
+        "leisure": 1.0,
+        "worship": 1.0,
+        "other_amenity": 1.0
+      },
+      "leisure_values": [
+        "park",
+        "garden",
+        "sports_centre",
+        "stadium",
+        "swimming_pool",
+        "fitness_centre",
+        "playground",
+        "recreation_ground"
+      ],
+      "area_floor_m2": 50.0,
+      "area_cap_m2": 5000.0,
+      "alpha": 0.5,
+      "poi_default_area_m2": 100.0,
+      "min_capacity": 3,
+      "capacity_slack": 3.0,
+      "max_share_of_population": 0.005
+    },
+    "dedup": {
+      "name_merge_radius_m": 50.0,
+      "log_radius_m": 10.0,
+      "merge_unnamed_same_category_within_m": 0.0,
+      "layer_priority": [
+        "healthcare",
+        "amenities",
+        "leisure",
+        "buildings"
+      ]
+    },
+    "assignment": {
+      "kernel": {
+        "type": "exponential",
+        "scale_m": 5000.0,
+        "power_exponent": 2.0,
+        "power_min_distance_m": 100.0
+      },
+      "candidate_k": 30,
+      "radius_m": 15000.0,
+      "fallback_radius_multipliers": [
+        2.0,
+        4.0
+      ],
+      "max_rounds": 200,
+      "fail_on_unassigned": true
+    },
+    "sensitivity": {
+      "enabled": true,
+      "capacity_slack": [
+        1.5,
+        2.0,
+        3.0,
+        5.0,
+        10.0,
+        1000000000.0
+      ]
+    },
+    "audit_reference": {
+      "tier_A": 24130,
+      "tier_B": 182348,
+      "tier_C": 606807
+    },
+    "vocab": {
+      "res_explicit": [
+        "apartments",
+        "bungalow",
+        "detached",
+        "dormitory",
+        "duplex",
+        "house",
+        "houses",
+        "residential",
+        "semidetached_house",
+        "terrace",
+        "villa"
+      ],
+      "edu_amenity": [
+        "childcare",
+        "college",
+        "driving_school",
+        "kindergarten",
+        "language_school",
+        "music_school",
+        "research_institute",
+        "school",
+        "training",
+        "university"
+      ],
+      "edu_building": [
+        "college",
+        "kindergarten",
+        "school",
+        "university"
+      ],
+      "health_amenity": [
+        "clinic",
+        "dentist",
+        "doctors",
+        "hospital",
+        "nursing_home",
+        "pharmacy",
+        "veterinary"
+      ],
+      "health_building": [
+        "clinic",
+        "hospital"
+      ],
+      "ind_building": [
+        "factory",
+        "industrial",
+        "manufacture",
+        "storage_tank",
+        "warehouse"
+      ],
+      "office_building": [
+        "office"
+      ],
+      "office_amenity": [
+        "coworking_space"
+      ],
+      "com_building": [
+        "commercial",
+        "kiosk",
+        "mall",
+        "retail",
+        "shop",
+        "supermarket"
+      ],
+      "retail_amenity": [
+        "atm",
+        "bank",
+        "bar",
+        "bureau_de_change",
+        "cafe",
+        "car_rental",
+        "car_wash",
+        "cinema",
+        "fast_food",
+        "food_court",
+        "fuel",
+        "marketplace",
+        "pub",
+        "restaurant",
+        "theatre"
+      ],
+      "civic_amenity": [
+        "bus_station",
+        "community_centre",
+        "courthouse",
+        "fire_station",
+        "government",
+        "library",
+        "police",
+        "post_office",
+        "public_building",
+        "townhall"
+      ],
+      "civic_building": [
+        "civic",
+        "government",
+        "public",
+        "train_station",
+        "transportation"
+      ],
+      "worship_building": [
+        "chapel",
+        "church",
+        "mosque",
+        "religious",
+        "shrine",
+        "synagogue",
+        "temple"
+      ],
+      "act_tag_cols": [
+        "amenity",
+        "shop",
+        "office",
+        "healthcare",
+        "craft",
+        "tourism",
+        "leisure"
+      ],
+      "category_order": [
+        "education",
+        "healthcare",
+        "industrial",
+        "office",
+        "commercial_retail",
+        "civic_public",
+        "worship",
+        "leisure",
+        "other_amenity"
+      ]
+    }
+  },
+  "input_checksums": {
+    "boundary": "080d882fecdf28cf865b9d1fa9d8aead193f890cb5d6d6db5f3d1588b1666442",
+    "buildings": "1457cf7ad8680fe2ab5366ffcc19628fbf4964cb143efcaab2653342388a6c11",
+    "landuse": "3df74051b1dc7be8dc4d7321ba37ed25c84ef38ec9aa0b5fdc93dc99431462a4",
+    "amenities": "f136a5ffb618ae6bbdb6b0f78a09adeb5eb3d3ec3adcf1bb34359828d356729c",
+    "healthcare": "b5a3ddcb81f2e4c5687c5ceb5e2d1c05fbb3dc934a18f384e705248b26208134",
+    "leisure": "59884f9a237c84b7d7dedfa96100bcedc435fde8ad7d011b673833e127fa79ab"
+  },
+  "counts": {
+    "agents": 100000,
+    "homes": 206478,
+    "destinations": 32363,
+    "locations": 238841
+  },
+  "generator_validation": {
+    "passed": true,
+    "n_checks": 33
+  },
+  "generator_timings_s": {
+    "load": 14.636,
+    "residential": 1.371,
+    "destinations": 5.096,
+    "assignment": 0.781,
+    "cap_sensitivity": 4.901,
+    "export": 0.657,
+    "validate": 0.606
+  },
+  "build": {
+    "v6_enabled": true,
+    "cuda_arch": "75",
+    "configure": [
+      "cmake",
+      "-S",
+      "/kaggle/working/CityEpi-GPU",
+      "-B",
+      "/kaggle/working/CityEpi-GPU/build-extpop",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DENABLE_CUDA_V6=ON",
+      "-DCMAKE_CUDA_ARCHITECTURES=75"
+    ]
+  },
+  "extpop_v0": {
+    "input": "/kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42/population.cepop",
+    "agents": 100000,
+    "locations": 238841,
+    "payload_crc32": "0x24c6bdf8",
+    "seed": 42,
+    "days": 100,
+    "initial_infected": 100,
+    "v0": {
+      "seconds": 0.528148,
+      "daily_checksum": "7a08bb17e8233f0f",
+      "final": [
+        99198,
+        2,
+        8,
+        792
+      ]
+    },
+    "v6": null,
+    "v0_v6_equal": null,
+    "pass": true
+  },
+  "extpop_v0_v6": {
+    "input": "/kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42/population.cepop",
+    "agents": 100000,
+    "locations": 238841,
+    "payload_crc32": "0x24c6bdf8",
+    "seed": 42,
+    "days": 100,
+    "initial_infected": 100,
+    "v0": {
+      "seconds": 0.482076,
+      "daily_checksum": "7a08bb17e8233f0f",
+      "final": [
+        99198,
+        2,
+        8,
+        792
+      ]
+    },
+    "v6": {
+      "device": "Tesla T4",
+      "options": "base",
+      "seconds_total": 0.039128,
+      "seconds_events": 0.037338,
+      "daily_checksum": "7a08bb17e8233f0f",
+      "final": [
+        99198,
+        2,
+        8,
+        792
+      ]
+    },
+    "v0_v6_equal": true,
+    "pass": true
+  },
+  "verdict": "ALL_PASSED",
+  "total_seconds": 83.03,
+  "output_checksums": {
+    "agents.parquet": "eb76d184dc431b7ae3b164e78d2635cceef18b01ae981619445e94a23aaadd22",
+    "config.json": "c1ae66c7315fe4afa8ba6fac4a2959e9e793c4d59c7bc46988050d9f9456606e",
+    "daily_v0.csv": "1f1799f884508ac5afdab8e051c2971bb7de05f3627d5f58c35f2379a77a1e40",
+    "daily_v6.csv": "1f1799f884508ac5afdab8e051c2971bb7de05f3627d5f58c35f2379a77a1e40",
+    "dedup_decisions.parquet": "b13446086ae230e7fe5bc09ce6bfeb7eae209e8893e4d14e58e80af6632ef2cf",
+    "extpop_v0.json": "ad1f095d7f4e3ad18da944183c3a2a416e9afb5e2152ea6a8884943eda554f52",
+    "extpop_v0_v6.json": "12dfcc01e57d2429a968ff2710385bc67bb8c7565107fd0dff65a67d4d3c0666",
+    "locations.geoparquet": "d21785b85f5ea65ad8ab6a9162be1eba31a256cc7ed763bcf095c93630a12008",
+    "manifest.json": "522993d06851c2d9de36c0c60000825df0d60fd1ff64488f203f008acc1bade6",
+    "population.cepop": "acd681061b4d0e06adb38a2a59a563f2ff297502a0b39b7d31e170dca7206377",
+    "report.json": "e1e989e1c9d5166ab44cddaf4f32bf988349dc2231a73694635df2634fa5c1bd",
+    "report.md": "42410d95a1fefd2cdbe67b9d89f9c2987f1bb0527e0bfb75d5177426e6f3c86b",
+    "validation_independent.json": "4df32d1b7d1a2170d13859c290df6f4b0de85ea4fe3c31995f0e9d84a2060809",
+    "logs/cmake_build.log": "606b0153a098f40f33030b3b04b84c341dcf9699a86560685d3b8b315db9d94e",
+    "logs/cmake_configure.log": "4f6fee27af54c2ba5fcc394feec5a014f56187695148a3d110ed4424ae85ec4c",
+    "logs/ctest_extpop.log": "ed64b12fda8edd688ffc2185920fc2387c93b95f726a832650c1c34cfd16dfbc",
+    "logs/extpop_v0.log": "b6952b3ca358707792d6d467fcc473c1ba3a72df17dd5ff18f86f4aa2514c42f",
+    "logs/extpop_v0_v6.log": "47a42ffc478aa324ba5d091858c208534ddea486522d54ab47fac7ad3c9af6c5",
+    "logs/generate.log": "c1092f87f9fc289e9a7c79d7aff7934cc286b8ae70ece2ed6495f1644ae499ae",
+    "logs/generate_rerun.log": "bfe43424c0bca2a914287fcf487fa46e056fe8e1f0007b3b6307555108100685",
+    "logs/validate_independent.log": "82cc2227653f33349712bd11337bd8a1a3d25bbe94dd4d72311cda2ebcb8153b"
+  }
+}

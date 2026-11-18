@@ -1,0 +1,16 @@
+input=data/synthetic/bengaluru_urban_N100000_seed42_households_v1/population.cepop
+format=CEPOP v1
+agents=100000
+locations=238841
+file_bytes=2294280
+payload_crc32=0xb5d0eac9
+loaded_states=S100000/E0/I0/R0
+seeded_initial=S99900/E0/I100/R0 (seed=46 init=100 days=100)
+validate_input=ok
+v0_population_conserved=yes
+v0_days_recorded=101
+v0_status=ok
+v0_seconds=0.4875
+v0_final=S99248/E3/I4/R745
+v0_daily_checksum=e5dd36c702a0ac5b
+RESULT: PASS

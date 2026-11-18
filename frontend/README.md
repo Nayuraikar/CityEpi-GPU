@@ -1,7 +1,7 @@
 # CityEpi-GPU dashboard
 
 React + TypeScript + Vite + Tailwind frontend; FastAPI backend in `../backend` serving files from `../ui_data_bundle`.
-Read-only: it visualises recorded results and never runs a simulation.
+Recorded-result pages are read-only; only the Simulation Studio launches live runs. Per-page data sources and limits: `../docs/dashboard_pages.md`.
 
     # terminal 1 (from repo root)
     cd backend && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt

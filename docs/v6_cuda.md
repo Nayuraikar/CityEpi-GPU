@@ -4,9 +4,11 @@
 structure and adds **independently switchable** optimizations. V5 is untouched and remains the baseline; V6 has its own RNG copy,
 host-info helper, test (`tests/test_v6.cpp`), benchmark (`bench/bench_v6.cpp`) and results directory (`bench/results/kaggle_v6/`).
 
-> **Status: implemented, NOT yet built with nvcc or run on a GPU.** No V6 timing, speedup, register count or GPU correctness
-> result exists yet. Every "expected" statement below is a hypothesis; sections marked *(pending)* are filled from Kaggle T4 runs.
-> Defaults stay at the V5-equivalent baseline until the acceptance rule is met by recorded evidence.
+> **Status (reconciled in Phase 5): implemented, built with nvcc 13.0.88 and run on a Kaggle Tesla T4.** The recorded
+> artifacts are in `ui_data_bundle/bench/results/kaggle_v6/` (the repository-level `bench/results/kaggle_v6/` directory is
+> currently empty; see `docs/release_checklist.md`). Everything below that says "recorded" comes from those files; nothing was
+> re-run on the development Mac (no NVIDIA GPU). Defaults in the code stay at the V5-equivalent baseline; the acceptance table
+> below says which switches *would* qualify, it does not change any default.
 
 ## Build / run
 ```
@@ -74,7 +76,7 @@ Graph build/instantiation is counted in `seconds_h2d`/`e2e`, not in `kernel_s`. 
   informationally. The authoritative check is that V6's daily counts equal V0's (and V5's when built together) in every test.
 - E3a/E3b are exact only for the decision `u < prob`, which is all that consumes `prob`; with NaN/inf `beta` the decisions also agree.
 
-## Correctness evidence *(pending GPU run)*
+## Correctness evidence (recorded, Kaggle T4)
 `tests/test_v6.cpp` (CTest entry `v6`, runs with `--require-gpu`) covers: host RNG bit-equality; device RNG bit-equality; invalid
 options (no device); bitwise `skip_exp` on/off equality of the device expression; failure injection in all three modes (after days
 1/7/20) and failure of each of the 10 device allocations in turn, with `v6_live_allocations()==0` after every path; per-kernel
@@ -84,7 +86,14 @@ optimization, combinations (E1+E2, E1+E3, E1+E2graph+E3, ...), and every block s
 for all block sizes) × betas {0,0.3,2,1e6}; extra seeds; 100k/1M; single-location contention; timers; no/all initially infected;
 zero/clamped durations; 0 and 1 days; home-/work-off; determinism over repeated runs.
 
-Result: *(pending — paste `bench/results/kaggle_v6/test_v6.log` summary here)*.
+**Recorded result** (`kaggle_v6/test_v6.log`, last line): `4212 V6 comparisons on Tesla T4; V6 OK`. Device: Tesla T4 cc 7.5, 40 SMs,
+14.6 GiB, driver 13000, runtime 13000, nvcc 13.0.88 (`cuda_version.txt`, `gpu_info.txt`). Per-row exactness is also recorded in
+the benchmark CSV: `identical_v0` and `identical_v5` are `yes` on every row of `v6_benchmark_all.csv`. The log also reports
+`E3 skip_exp: 0/240 bitwise differences` and, informationally, `1-exp(-x) device vs host: 541/200000 bitwise differences, max rel
+diff 3.06e-15` (device `exp()` is not bit-identical to host libm; exactness rests on the daily counts matching V0).
+
+Independent cross-check on the household population (`ui_data_bundle/data/synthetic/bengaluru_urban_N100000_seed42_households_v1/extpop_v0_v6.json`):
+V0 and V6 (options `base`) give the same daily checksum `b213860e1d97b2c8` and final S/E/I/R 65,371 / 1,257 / 2,343 / 31,029.
 
 ## Benchmark methodology
 Same as V5: identical Params/seed (100 days, `beta=0.3`), warm-up, interleaved repetitions, median/min/max/CV, every row compared
@@ -97,17 +106,45 @@ in `bench/results/kaggle_v5/` are not modified.
 **Acceptance rule:** an optimization becomes a default only if its median kernel time improves by more than max(3%, 2×CV) at two or
 more sizes versus `V6_base`, with no regression above 2% at any other size (`bench/analyze_v6.py`). Negative results stay in this report.
 
-## Experiment results *(pending)*
-| Experiment | 10k | 100k | 1M | 5M | verdict |
-|---|---|---|---|---|---|
-| E1 aggregation | | | | | |
-| E2 async | | | | | |
-| E2 graph (32 / 1 days) | | | | | |
-| E3 skipexp / skiprng / predload / all | | | | | |
-| E4 block 64/128/512/1024 | | | | | |
-| combinations | | | | | |
+## Experiment results (recorded, Kaggle T4, 7 repetitions, 100 days, `--scenario all`)
+Output of `python3 bench/analyze_v6.py ui_data_bundle/bench/results/kaggle_v6/v6_benchmark_all.csv`, executed on the recorded CSV
+(default scenario). Positive = faster than `V6_base`; `*` = above max(3%, 2×CV); the verdict applies the acceptance rule above.
 
-Registers / occupancy / per-kernel split: *(pending)*.
+| backend | 10k | 100k | 1M | 5M | verdict |
+|---|---|---|---|---|---|
+| V6_E1 (aggregation) | +26.1%* | +67.5%* | +83.7%* | +63.9%* | ACCEPT |
+| V6_E2_async | +38.1%* | +14.9%* | +35.9%* | +0.4% | ACCEPT |
+| V6_E2_graph32 | +40.5%* | +15.4%* | +36.5%* | +0.4% | ACCEPT |
+| V6_E2_graph1 | +41.5%* | +15.6%* | +36.6%* | +0.5% | ACCEPT |
+| V6_E3_skipexp | +7.0% | +5.4%* | +38.3%* | +3.6%* | ACCEPT |
+| V6_E3_skiprng | -2.0% | -0.4% | +35.3%* | +0.0% | reject |
+| V6_E3_predload | -3.0% | +0.2% | +35.3%* | -0.2% | reject |
+| V6_E3_all | +6.5% | +4.8%* | +38.0%* | +3.3%* | ACCEPT |
+| V6_E4_b64 | +9.0% | +4.4%* | +35.3%* | -0.1% | ACCEPT |
+| V6_E4_b128 | +8.0% | +3.0% | +35.4%* | -0.1% | reject |
+| V6_E4_b512 | -17.4% | -2.5% | +35.3%* | +0.2% | reject |
+| V6_E4_b1024 | -46.3% | -2.5% | +34.5%* | +0.1% | reject |
+| V6_E1_E2async | +63.9%* | +78.8%* | +87.3%* | +64.1%* | ACCEPT |
+| V6_E1_E2graph | +66.4%* | +79.5%* | +87.3%* | +64.1%* | ACCEPT |
+| V6_E1_E3 | +31.3%* | +68.5%* | +88.2%* | +67.1%* | ACCEPT |
+| V6_E1_E2graph_E3 | +71.1%* | +82.4%* | +89.3%* | +67.4%* | ACCEPT |
+| V6_E1_E2graph_E3_b128 | +77.9%* | +83.8%* | +89.6%* | +67.4%* | ACCEPT |
+| V6_E1_E2graph_E3_b512 | +66.7%* | +79.5%* | +88.5%* | +67.3%* | ACCEPT |
+| V6_E1_E2graph_E3_b1024 | +49.3%* | +76.1%* | +86.5%* | +66.2%* | ACCEPT |
+
+**Unexplained 1M anomaly (not explained, not hidden).** At 1M agents `V6_base` (≈131 ms) is about 35% slower than *every*
+non-aggregating variant, including variants that should be neutral there (`skiprng`, `predload`, `b128`…). The "+35%" entries in
+the 1M column of rejected rows are therefore a property of the `V6_base` reference at that size, not evidence for those switches.
+No profiler data explains it; do not attribute the 1M column to a mechanism. (`V6_base` CV at 1M is 5.7% vs 0.1–0.2% at 5M.)
+
+**Speedups versus V0 from the same recorded run** (kernel time, data resident, default scenario; V0 is the Xeon CPU row of the
+same CSV; `kernel_speedup_v0` column): V5 7.5× / 28.8× / 26.0× / 48.0× and `V6_E1_E2graph_E3_b128` 33.7× / 180× / 294× / 180×
+at 10k / 100k / 1M / 5M. These are *kernel-only* numbers; `e2e_speedup_v0` (includes allocation, copies, graph build) is smaller
+and is in the same CSV. V5 and V6 come from different Kaggle sessions than the V4 results, so do not mix baselines across runs.
+
+Registers / occupancy (`# kernel_info` in the CSV): `V6_base` location kernel 28 regs, step kernel 30 regs, 0 B local memory,
+100% theoretical occupancy; `V6_E1` step kernel 34 regs and 16 B shared memory, 100% occupancy. Per-kernel time split:
+`kaggle_v6/v6_profile.csv` (profile values are aggregated over the 100-day loop, not per day).
 
 ## Deferred (not implemented)
 E5 vectorised multi-agent threads, E6 agent renumbering with `orig_id` for RNG, E7 persistent cooperative kernel, E8 pull-model CSR

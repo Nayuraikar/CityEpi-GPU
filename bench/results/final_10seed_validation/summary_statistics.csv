@@ -1,0 +1,4 @@
+scenario,attack_mean,attack_sd,attack_min,attack_max,peak_mean,peak_sd,peak_day_mean,incidence_mean
+baseline,35.093,1.544,31.388,36.884,2943.4,195.345,79.1,622.0
+high,71.958,1.764,68.875,75.032,6810.7,356.377,51.8,1418.2
+low,0.777,0.11,0.631,0.938,119.0,4.522,4.0,25.8

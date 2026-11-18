@@ -1,0 +1,13 @@
+{
+  "input": "/kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42_households_v1/population.cepop",
+  "agents": 100000,
+  "locations": 238841,
+  "payload_crc32": "0xb5d0eac9",
+  "seed": 42,
+  "days": 100,
+  "initial_infected": 100,
+  "v0": {"seconds": 0.503974, "daily_checksum": "b213860e1d97b2c8", "final": [65371,1257,2343,31029]},
+  "v6": {"device": "Tesla T4", "options": "base", "seconds_total": 0.042164, "seconds_events": 0.039918, "daily_checksum": "b213860e1d97b2c8", "final": [65371,1257,2343,31029]},
+  "v0_v6_equal": true,
+  "pass": true
+}

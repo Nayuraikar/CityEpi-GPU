@@ -1,0 +1,4 @@
+$ /usr/bin/python3 /kaggle/working/CityEpi-GPU/scripts/generate_synthetic_population.py --geo-dir data/processed/geo --boundary data/boundaries/bengaluru_urban.geojson --n-agents 100000 --seed 42 --out-dir /kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42 --overwrite
+status=ok out=/kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42
+agents=100000 homes=206478 destinations=32363
+validation: PASS (33 checks)

@@ -1,0 +1,46 @@
+$ /usr/bin/python3 /kaggle/working/CityEpi-GPU/scripts/validate_synthetic_population.py --run-dir /kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42_households_v1 --boundary data/boundaries/bengaluru_urban.geojson
+PASS output files present
+PASS cepop format (magic/version/size/CRC)
+PASS agent count == requested N
+PASS array sizes consistent
+PASS agents.parquet rows == N
+PASS locations rows == cepop locations
+PASS location_id is 0..L-1 in row order
+PASS all agents start S with timer 0
+PASS home/work ids in range
+PASS location types are 0/1
+PASS home_loc -> HOME, work_loc -> WORK
+PASS cepop loc_type == locations.loc_type
+PASS occupancy recomputed == cepop occupancy
+PASS occupancy recomputed == locations.occupancy
+PASS sum(occupancy) == 2N
+PASS agents.parquet matches cepop (ids, home, destination)
+PASS no nulls in agents.parquet
+PASS locations CRS is EPSG:4326
+PASS no missing/empty geometries
+PASS all geometries are valid points
+PASS coordinates finite
+PASS lon/lat columns equal geometry
+PASS all coordinates inside Bengaluru Urban boundary
+PASS capacity >= 1 everywhere
+PASS occupancy <= capacity everywhere
+PASS home occupancy <= max_agents_per_home
+PASS no destination above max_share_of_population
+PASS home category 'residential', destination categories configured
+PASS (osm_type, osm_id, loc_type) unique
+PASS osm_id integer dtype
+PASS assignment distance recomputed from EPSG:4326 coords == stored (<=0.01 m)
+PASS distances finite and >= 0
+PASS dedup decision types recognised
+PASS households.parquet and agents.household_id present
+PASS household_id is 0..H-1 in row order
+PASS household sizes sum to N
+PASS household sizes within configured support
+PASS household sizes >= 1
+PASS every agent has exactly one valid household
+PASS household member counts equal household sizes
+PASS every household maps to exactly one valid HOME location
+PASS each agent's home_loc equals its household's home_loc
+PASS home occupancy equals sum of member household sizes
+PASS households per building <= max_households_per_building
+ALL PASSED: 44 checks, 0 failed

@@ -1,0 +1,19 @@
+V6 CUDA device    : YES (probe kernel executed on device)
+host              : Intel(R) Xeon(R) CPU @ 2.00GHz, 4 logical cores, Linux 6.18.55+ x86_64
+compiler          : nvcc 13.0.88
+V5 cross-check    : enabled (every V6 run is also compared with V5)
+device            : Tesla T4 cc7.5, 40 SMs, 14.6 GiB, driver 13000, runtime 13000
+kernel_info b64                                loc:  28 regs occ 100.0% | step:  30 regs, 0 B local, occ 100.0%
+kernel_info agg+graph32+skipexp+skiprng+predload+b64 loc:  28 regs occ 100.0% | step:  29 regs, 0 B local, occ 100.0%
+kernel_info b128                               loc:  28 regs occ 100.0% | step:  30 regs, 0 B local, occ 100.0%
+kernel_info agg+graph32+skipexp+skiprng+predload+b128 loc:  28 regs occ 100.0% | step:  29 regs, 0 B local, occ 100.0%
+kernel_info base                               loc:  28 regs occ 100.0% | step:  30 regs, 0 B local, occ 100.0%
+kernel_info agg+graph32+skipexp+skiprng+predload loc:  28 regs occ 100.0% | step:  28 regs, 0 B local, occ 100.0%
+kernel_info b512                               loc:  28 regs occ 100.0% | step:  30 regs, 0 B local, occ 100.0%
+kernel_info agg+graph32+skipexp+skiprng+predload+b512 loc:  28 regs occ 100.0% | step:  28 regs, 0 B local, occ 100.0%
+kernel_info b1024                              loc:  28 regs occ 100.0% | step:  30 regs, 0 B local, occ 100.0%
+kernel_info agg+graph32+skipexp+skiprng+predload+b1024 loc:  28 regs occ 100.0% | step:  28 regs, 0 B local, occ 100.0%
+E3 skip_exp: 0/240 bitwise differences (40 nin==0 cases all +0.0)
+option sets: full=34 quick=4
+1-exp(-x) device vs host (informational): 541/200000 bitwise differences, max rel diff 3.06e-15
+4212 V6 comparisons on Tesla T4; V6 OK

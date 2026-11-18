@@ -1,0 +1,75 @@
+{
+  "tool_version": "synthpop-1",
+  "created_utc": "2026-11-14T22:20:22+00:00",
+  "status": "ok",
+  "seed": 42,
+  "n_agents": 100000,
+  "config_sha256": "c7a28882dae9ce4f80998c9230bbfd901e6f5fc52ac1bf3bac01c06ba79d7250",
+  "note": "created_utc and timings vary between runs; the deterministic artifacts are listed in report.json",
+  "versions": {
+    "python": "3.13.16",
+    "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+    "numpy": "2.1.3",
+    "pandas": "2.3.3",
+    "geopandas": "1.2.0",
+    "shapely": "2.2.0",
+    "pyarrow": "23.0.1",
+    "scipy": "1.16.3"
+  },
+  "inputs": {
+    "boundary": {
+      "sha256": "080d882fecdf28cf865b9d1fa9d8aead193f890cb5d6d6db5f3d1588b1666442",
+      "n_raw": null
+    },
+    "buildings": {
+      "sha256": "1457cf7ad8680fe2ab5366ffcc19628fbf4964cb143efcaab2653342388a6c11",
+      "n_raw": 827501
+    },
+    "landuse": {
+      "sha256": "3df74051b1dc7be8dc4d7321ba37ed25c84ef38ec9aa0b5fdc93dc99431462a4",
+      "n_raw": 23804
+    },
+    "amenities": {
+      "sha256": "f136a5ffb618ae6bbdb6b0f78a09adeb5eb3d3ec3adcf1bb34359828d356729c",
+      "n_raw": 24498
+    },
+    "healthcare": {
+      "sha256": "b5a3ddcb81f2e4c5687c5ceb5e2d1c05fbb3dc934a18f384e705248b26208134",
+      "n_raw": 3536
+    },
+    "leisure": {
+      "sha256": "59884f9a237c84b7d7dedfa96100bcedc435fde8ad7d011b673833e127fa79ab",
+      "n_raw": 7342
+    }
+  },
+  "files": {
+    "agents.parquet": {
+      "sha256": "eb76d184dc431b7ae3b164e78d2635cceef18b01ae981619445e94a23aaadd22",
+      "bytes": 2491472
+    },
+    "config.json": {
+      "sha256": "c1ae66c7315fe4afa8ba6fac4a2959e9e793c4d59c7bc46988050d9f9456606e",
+      "bytes": 4558
+    },
+    "dedup_decisions.parquet": {
+      "sha256": "b13446086ae230e7fe5bc09ce6bfeb7eae209e8893e4d14e58e80af6632ef2cf",
+      "bytes": 278340
+    },
+    "locations.geoparquet": {
+      "sha256": "d21785b85f5ea65ad8ab6a9162be1eba31a256cc7ed763bcf095c93630a12008",
+      "bytes": 15692375
+    },
+    "population.cepop": {
+      "sha256": "acd681061b4d0e06adb38a2a59a563f2ff297502a0b39b7d31e170dca7206377",
+      "bytes": 2294280
+    },
+    "report.json": {
+      "sha256": "e1e989e1c9d5166ab44cddaf4f32bf988349dc2231a73694635df2634fa5c1bd",
+      "bytes": 41653
+    },
+    "report.md": {
+      "sha256": "42410d95a1fefd2cdbe67b9d89f9c2987f1bb0527e0bfb75d5177426e6f3c86b",
+      "bytes": 22515
+    }
+  }
+}

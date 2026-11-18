@@ -1,0 +1,4 @@
+$ /usr/bin/python3 /kaggle/working/CityEpi-GPU/scripts/generate_synthetic_population.py --geo-dir data/processed/geo --boundary data/boundaries/bengaluru_urban.geojson --n-agents 100000 --seed 42 --out-dir /kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42_households_v1_rerun --overwrite --set residential.households={"enabled":true,"size_pmf":{"1":0.15,"2":0.20,"3":0.25,"4":0.25,"5":0.10,"6":0.05},"max_households_per_building":4} --no-sensitivity
+status=ok out=/kaggle/working/CityEpi-GPU/data/synthetic/bengaluru_urban_N100000_seed42_households_v1_rerun
+agents=100000 homes=206478 destinations=32363
+validation: PASS (44 checks)
